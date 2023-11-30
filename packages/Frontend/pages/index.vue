@@ -1,7 +1,11 @@
 <script setup lang="ts">
-  import Landing from '../components/Landing.vue'
+import Landing from "../components/Landing.vue";
+import Type from "../components/Type.vue";
 </script>
-  
+
 <template>
-  <Landing />
+  <div>
+    <!-- <Landing /> -->
+    <Type />
+  </div>
 </template>

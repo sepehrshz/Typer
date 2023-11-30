@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import {RouterView} from "vue-router"
+import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <div>
+  <NuxtLayout name="sidebar">
     <RouterView />
-  </div>
+  </NuxtLayout>
 </template>
 
 <style scoped></style>
