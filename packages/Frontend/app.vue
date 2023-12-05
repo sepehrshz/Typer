@@ -3,9 +3,9 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <NuxtLayout name="sidebar">
+  <!-- <NuxtLayout name="sidebar"> -->
     <RouterView />
-  </NuxtLayout>
+  <!-- </NuxtLayout> -->
 </template>
 
 <style scoped></style>

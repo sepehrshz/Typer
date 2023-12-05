@@ -13,6 +13,8 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/tailwindcss": "^6.9.4",
+    "@vueuse/core": "^10.6.1",
+    "@vueuse/nuxt": "^10.5.0",
     "autoprefixer": "^10.4.16",
     "nuxt": "^3.8.0",
     "nuxt-icon": "^0.6.1",
@@ -29,7 +31,6 @@
     "@nuxt/image": "^1.0.0",
     "@nuxt/ui": "^2.10.0",
     "@pinia/nuxt": "^0.5.1",
-    "@vueuse/nuxt": "^10.5.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2"
   }

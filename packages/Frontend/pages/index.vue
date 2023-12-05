@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import Landing from "../components/Landing.vue";
-import Type from "../components/Type.vue";
+import TypingBox from "../components/TypingBox.vue";
 </script>
 
 <template>
   <div>
-    <!-- <Landing /> -->
-    <Type />
+    <TypingBox />
   </div>
 </template>

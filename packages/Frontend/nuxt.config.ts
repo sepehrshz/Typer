@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "nuxt-typed-router",
     "@nuxt/ui",
+    "@vueuse/nuxt",
   ],
   colorMode: {
     classSuffix: "",
@@ -15,4 +16,5 @@ export default defineNuxtConfig({
   image: {
     // Options
   },
+  ui: {},
 });
