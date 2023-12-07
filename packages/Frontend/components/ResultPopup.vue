@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
+import { defineProps } from "vue";
 import { toRefs } from '@vueuse/core'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CheckIcon } from '@heroicons/vue/24/outline'
-import type {TypeInfo} from "@/types/index"
+import type { TypeInfo } from "@/types/index"
 
 const props = defineProps<{
- typeInfo:TypeInfo
+ typeInfo:TypeInfo,
+ isWpm:boolean
 }>();
 
 const {resultWindow, startTime, mistakes, cpmTag, wpmTag} = toRefs(props.typeInfo)
@@ -32,7 +33,7 @@ const {resultWindow, startTime, mistakes, cpmTag, wpmTag} = toRefs(props.typeInf
                   <div class="mt-8 px-10 bg-gray-200 rounded-md py-8 flex flex-col sm:px-4 sm:flex-row sm:justify-around">
                     <span class="flex flex-row justify-between sm:flex sm:flex-row sm:items-center sm:justify-normal"><span class="flex items-center"><Icon size="18px" name="fluent-emoji:eleven-thirty" />&nbsp;Time: </span>&nbsp;{{ startTime }}s</span>
                     <span class="flex flex-row justify-between"><span class="flex items-center"><Icon size="18px" name="fluent-emoji:cross-mark" />&nbsp;Mistakes: </span>&nbsp;{{ mistakes }}</span>
-                    <span class="flex flex-row justify-between"><span class="flex items-center"><Icon size="18px" name="fluent-emoji:antenna-bars" />&nbsp;WPM: </span>&nbsp;{{ wpmTag }}</span>
+                    <span v-if="isWpm" class="flex flex-row justify-between"><span class="flex items-center"><Icon size="18px" name="fluent-emoji:antenna-bars" />&nbsp;WPM: </span>&nbsp;{{ wpmTag }}</span>
                     <span class="flex flex-row justify-between"><span class="flex items-center"><Icon size="18px" name="fluent-emoji:bar-chart" />&nbsp;CPM: </span>&nbsp;{{ cpmTag }}</span>
                   </div>
                 </div>
@@ -52,4 +53,3 @@ const {resultWindow, startTime, mistakes, cpmTag, wpmTag} = toRefs(props.typeInf
 <style>
 
 </style>
-~/types/index

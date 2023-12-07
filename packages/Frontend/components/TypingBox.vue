@@ -19,7 +19,7 @@ const toggleId = ref<number>(2)
 const key = ref(Math.floor(Math.random() * paragraphs.length))
 const typeBox = ref()
 const { y } = useScroll(typeBox, { behavior: 'smooth' })
-let charNum: number = 250
+const charNum = ref<number>(250)
 
 const typeInfo = ref<TypeInfo>({
   resultWindow: false,
@@ -47,7 +47,6 @@ const loadParagraph = computed<
 
 const initTyping = () => {
   typedChar.value = inputField.value.split("")[charIndex.value];
-  console.log(typedChar.value)
   if (charIndex.value < loadParagraph.value.length) {
     if (!isTyping.value) {
       timer = setInterval(initTimer, 1000);
@@ -64,7 +63,6 @@ const initTyping = () => {
       loadParagraph.value[charIndex.value + 1].active = false;
     } 
     else {
-      console.log(charIndex.value)
       if (loadParagraph.value[charIndex.value].letter == typedChar.value) {
         if (isFirst.value) loadParagraph.value[charIndex.value].status = "correct";
         charIndex.value++;
@@ -79,7 +77,6 @@ const initTyping = () => {
         }
         inputField.value = inputField.value.slice(0, -1)
       }
-      console.log(inputField.value)
     }
     if (charIndex.value != loadParagraph.value.length) {
       loadParagraph.value[charIndex.value].active = true;
@@ -102,9 +99,9 @@ const initTyping = () => {
     clearInterval(timer);
     inputField.value = "";
   }
-  if(charIndex.value > charNum) {
+  if(charIndex.value > charNum.value) {
   y.value += 150
-  charNum += 250
+  charNum.value += 250
   }
 };
 
@@ -127,6 +124,8 @@ const resetGame = () => {
   inputField.value = ""
   typeInfo.value.wpmTag = 0
   typeInfo.value.cpmTag = 0
+  y.value = 0
+  charNum.value = 0
   focusInput()
 };
 
@@ -224,7 +223,7 @@ onClickOutside(inputFieldRef, focusInput)
       </div>
     </div>
     <!-- Result pop-up -->
-    <ResultPopup :type-info="typeInfo" @try-again="resetGame" />
+    <ResultPopup :type-info="typeInfo" @try-again="resetGame" :isWpm="true" />
   </div>
 </template>
 
@@ -232,82 +231,6 @@ onClickOutside(inputFieldRef, focusInput)
 ::selection {
   color: #fff;
   background: #b800e6;
-}
-
-.active::before {
-  position: absolute;
-  content: "";
-  height: 2px;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  border-radius: 5px;
-  background: #17a2b8;
-  animation: blink 1s ease-in-out infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 1;
-  }
-}
-
-@media (max-width: 745px) {
-  .wrapper {
-    padding: 20px;
-  }
-
-  .content-box .content {
-    padding: 20px 0;
-  }
-
-  .contnent-box .typing-text {
-    max-height: 100%;
-  }
-
-  .typing-text p {
-    font-size: 19px;
-    text-align: left;
-  }
-
-  .content button {
-    width: 100%;
-    font-size: 15px;
-    padding: 10px 0;
-    margin-top: 20px;
-  }
-
-  .content .result .content-details {
-    width: 100%;
-  }
-
-  .result-detail li:not(:first-child) {
-    border-left: 0;
-    padding: 0;
-  }
-
-  .result-details li p,
-  .result-details li span {
-    font-size: 17px;
-  }
-}
-
-@media (max-width: 518px) {
-  .wrapper .content-box {
-    padding: 10px 15px 0;
-  }
-
-  .typing-text p {
-    font-size: 18px;
-  }
-
-  .result-details li {
-    margin-bottom: 10px;
-  }
-
-  .content button {
-    margin-top: 10px;
-  }
 }
 
 .fire {
@@ -418,4 +341,3 @@ onClickOutside(inputFieldRef, focusInput)
    }
 }
 </style>
-~/types/index
