@@ -37,12 +37,12 @@ const loadParagraph = computed<
   {
     letter: string;
     active: boolean;
-    status: "correct" | "incorrect" | "nutrul";
+    status: "correct" | "incorrect" | "neutral";
   }[]
 >(() =>
   paragraphs[key.value]
     .split("")
-    .map((v) => ({ letter: v, active: false, status: "nutrul" }))
+    .map((v) => ({ letter: v, active: false, status: "neutral" }))
 )
 
 const initTyping = () => {
@@ -58,7 +58,7 @@ const initTyping = () => {
         if (loadParagraph.value[charIndex.value].status === "incorrect") {
           typeInfo.value.mistakes--;
         }
-        loadParagraph.value[charIndex.value].status = "nutrul";
+        loadParagraph.value[charIndex.value].status = "neutral";
       }
       loadParagraph.value[charIndex.value + 1].active = false;
     } 
@@ -90,9 +90,6 @@ const initTyping = () => {
     typeInfo.value.wpmTag = wpm;
     typeInfo.value.cpmTag = charIndex.value - typeInfo.value.mistakes;
   }
-  // else {
-  //   Bug
-  // }
   if (charIndex.value == loadParagraph.value.length) {
     loadParagraph.value[charIndex.value - 1].active = false;
     typeInfo.value.resultWindow = true

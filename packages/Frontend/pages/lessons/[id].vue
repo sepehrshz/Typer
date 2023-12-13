@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import lessons from "../assets/lessons";
+import lessons from "~/assets/lessons";
 import { ref } from "vue";
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
 import { onClickOutside } from '@vueuse/core'
-import ResultPopup from "./ResultPopup.vue"
+import ResultPopup from "@/components/ResultPopup.vue"
+import HandHolder from "@/components/HandHolder.vue";
 import type {TypeInfo} from "@/types/index"
 
 // Define reactive variables
@@ -17,6 +18,8 @@ const inputFieldRef = ref()
 const typedChar = ref<string>("")
 const letterIndex = ref<number>(0)
 const LessonBox = ref()
+const route = useRouter()
+const id = route.currentRoute.value.params?.id
 
 const typeInfo = ref<TypeInfo>({
   resultWindow: false,
@@ -24,19 +27,19 @@ const typeInfo = ref<TypeInfo>({
   mistakes: 0,
   wpmTag: 0,
   cpmTag: 0
-});
+})
 
 const loadLesson = ref<
   {
     letter: string
     active: boolean
-    status: "correct" | "incorrect" | "neutral"
+    status: "correct" | "incorrect" | "nutrul"
   }[]
 >(
-  lessons[0].value
-    .split("")
-    .map((v) => ({ letter: v, active: false, status: "neutral" }))
-)
+  lessons[id - 1].value
+  .split("")
+  .map((v) => ({ letter: v, active: false, status: "nutrul" }))
+  )
 
 loadLesson.value[0].active = true
 
@@ -56,7 +59,7 @@ const initTyping = () => {
                 if (loadLesson.value[charIndex.value].status === "incorrect") {
                     typeInfo.value.mistakes--;
                 }
-                loadLesson.value[charIndex.value].status = "neutral";
+                loadLesson.value[charIndex.value].status = "nutrul";
             }
             loadLesson.value[charIndex.value + 1].active = false;
         }
@@ -107,7 +110,7 @@ const resetGame = () => {
   inputField.value = ""
   typeInfo.value.cpmTag = 0
   letterIndex.value = 0
-  loadLesson.value = lessons[0].value.split("").map((v) => ({ letter: v, active: false, status: "neutral" }))
+  loadLesson.value = lessons[0].value.split("").map((v) => ({ letter: v, active: false, status: "nutrul" }))
   focusInput()
 }
 
@@ -159,7 +162,7 @@ onClickOutside(inputFieldRef, focusInput)
       </UProgress>
       <!-- Lesson text -->
       <div ref="LessonBox" :class="!enabledDetail ? 'mt-6' : ''" class="w-full flex items-center justify-around text-9xl mt-2 h-64 px-5">
-        <span v-for="(word, index) in currentLetters" :key="index" class="px-10 py-7"
+        <span v-for="(word, index) in currentLetters" :key="index" class="flex justify-center w-1/5 py-7"
           :class="[
             word.active ? 'text-electric-violet-600 border border-electric-violet-600 bg-electric-violet-100 rounded-md' : 'bg-gray-100 rounded-md', 
             word.status === 'correct' ? 'text-green-600' : '', 
@@ -187,6 +190,8 @@ onClickOutside(inputFieldRef, focusInput)
         <button @click="resetGame" class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-electric-violet-600 transition-all hover:bg-electric-violet-500 active:scale-90">Try Again</button>
       </div>
     </div>
+	  <!-- Hand SVG -->
+	  <HandHolder :active-key="typedChar" />
     <!-- Result pop-up -->
     <ResultPopup :type-info="typeInfo" @try-again="resetGame" :isWpm="false" />
   </div>
