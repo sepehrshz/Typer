@@ -1,9 +1,10 @@
 <script setup lang="ts">
+
 import paragraphs from "../assets/paragraphs";
 import { ref } from "vue";
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
 import { onClickOutside, useScroll } from '@vueuse/core'
-import ResultPopup from "./ResultPopup.vue"
+import ResultPopup from "@/components/ResultPopup.vue"
 import type {TypeInfo} from "@/types/index"
 
 // Define reactive variables
@@ -41,8 +42,8 @@ const loadParagraph = computed<
   }[]
 >(() =>
   paragraphs[key.value]
-    .split("")
-    .map((v) => ({ letter: v, active: false, status: "neutral" }))
+  .split("")
+  .map((v) => ({ letter: v, active: false, status: "neutral" }))
 )
 
 const initTyping = () => {
@@ -97,8 +98,8 @@ const initTyping = () => {
     inputField.value = "";
   }
   if(charIndex.value > charNum.value) {
-  y.value += 150
-  charNum.value += 250
+    y.value += 150
+    charNum.value += 250
   }
 };
 

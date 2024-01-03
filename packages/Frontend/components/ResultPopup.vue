@@ -38,8 +38,8 @@ const {resultWindow, startTime, mistakes, cpmTag, wpmTag} = toRefs(props.typeInf
                   </div>
                 </div>
               </div>
-              <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                <button type="button" class="outline-none inline-flex w-full justify-center rounded-md bg-electric-violet-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-electric-violet-700  sm:col-start-2 sm:text-sm">Go to dashboard</button>
+              <div class="inline-block mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3"> 
+                <button type="button" class="outline-none inline-flex w-full justify-center rounded-md bg-electric-violet-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-electric-violet-700  sm:col-start-2 sm:text-sm"><NuxtLink to="/lessons"> Go to dashboard</NuxtLink></button>
                 <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50  sm:col-start-1 sm:mt-0 sm:text-sm" @click="$emit('tryAgain')">Try again</button>
               </div>
             </DialogPanel>
