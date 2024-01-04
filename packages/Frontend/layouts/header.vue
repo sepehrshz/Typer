@@ -11,8 +11,8 @@
       </NuxtLink>
       <div>About us</div>
       <div class="flex justify-between ml-40">
-        <button class="flex justify-center items-center rounded-md h-10 w-20 border border-gray-300 hover:bg-electric-violet-500 hover:border-none">Sign up</button>
-        <button class="flex justify-center items-center rounded-md ml-5 h-10 w-20 bg-electric-violet-500">Login</button>
+        <NuxtLink to="/signup"><button class="flex justify-center items-center rounded-md h-10 w-20 border border-gray-300 hover:bg-electric-violet-500 hover:border-none">Sign up</button></NuxtLink>
+        <NuxtLink to="/login"><button class="flex justify-center items-center rounded-md ml-5 h-10 w-20 bg-electric-violet-500">Login</button></NuxtLink>
       </div>
     </div>
   </div>
