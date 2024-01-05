@@ -14,10 +14,10 @@ const {x, y} = useMouse()
     <div class="text-lg mt-8 text-center w-1/2">Start to learn and increase your 10 fingers typing and improve your skills for <b class="text-electric-violet-500">Free</b></div>
     <div class="mt-12">
       <NuxtLink to="/lessons">
-        <button class="h-14 w-28 ml-10 rounded-lg bg-white border-2 border-electric-violet-500 hover:bg-electric-violet-500 hover:text-white">Get started</button>
+        <button class="h-14 w-28 ml-10 rounded-lg bg-white border-2 border-electric-violet-500 hover:bg-gradient-to-r hover:from-electric-violet-500 hover:to-electric-violet-400 hover:border-none hover:text-white">Get started</button>
       </NuxtLink>
       <NuxtLink to="/speedTest">
-        <button class="h-14 w-28 ml-10 rounded-lg text-white bg-electric-violet-500">Speed test</button>
+        <button class="h-14 w-28 ml-10 rounded-lg text-white bg-gradient-to-r from-electric-violet-500 to-electric-violet-400">Speed test</button>
       </NuxtLink>
     </div>
     <img class="h-96" src="../assets/computer.png" />

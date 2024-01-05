@@ -25,6 +25,7 @@
 
     async function onSubmit (event: FormSubmitEvent<Schema>) {
       console.log(event.data)
+      
     }
 
     const iconActive = ref(false)

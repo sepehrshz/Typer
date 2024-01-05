@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+definePageMeta({
+  layout: "header",
+})
 import paragraphs from "../assets/paragraphs";
 import { ref } from "vue";
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
@@ -136,10 +138,10 @@ onClickOutside(inputFieldRef, focusInput)
 </script>
 
 <template>
-  <div class="w-[770px] h-[96vh] absolute top-20 left-[380px] p-[35px] bg-white">
+  <div class="w-full h-[88vh] flex justify-center items-center p-[35px] bg-white">
     <!-- Typing box -->
     <input autofocus @input="initTyping" ref="inputFieldRef" v-model="inputField" type="text" class="opacity-0 z-0 absolute" />
-    <div class="rounded-xl border-2 border-gray-400 flex flex-col items-center">
+    <div class="rounded-xl w-[750px] border-2 border-gray-400 flex flex-col items-center">
       <!-- Typing box header -->
       <div class="bg-gray-400 w-full h-16 rounded-t-lg flex justify-around items-center">
         <SwitchGroup as="div" class="flex items-center">
@@ -169,7 +171,7 @@ onClickOutside(inputFieldRef, focusInput)
         </span>
       </div>
       <!-- Progress bar -->
-      <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-3" :value="Math.floor((charIndex / loadParagraph.length) * 100)" :color="typeInfo.wpmTag > 20 ? 'red' : 'purple'" size="lg" indicator>
+      <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-3" :value="Math.floor((charIndex / loadParagraph.length) * 100)"  :color="typeInfo.wpmTag > 20 ? 'red' : 'purple'" size="lg" indicator>
         <template #indicator="{ percent }">
           <div class="text-right" :style="{ width: `${percent}%` }">
             <span :class="typeInfo.wpmTag > 20 ? 'text-red-600 text-xl transition-all ease-linear': 'text-purple-700 text-lg transition-all ease-linear'">

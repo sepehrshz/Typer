@@ -1,8 +1,10 @@
 <template>
-  <div class="relative z-20 flex items-center h-20 w-full bg-gray-500 text-white">
+  <div class="relative z-20 flex items-center h-20 w-full bg-gradient-to-r from-gray-500 to-gray-400 text-white">
     <div class="w-1/4 pl-10">Typer</div>
     <div class="flex  items-center justify-evenly w-3/4">
-      <div>Home</div>
+      <NuxtLink to="/">
+        <div>Home</div>
+      </NuxtLink>
       <NuxtLink to="/lessons">
         <div>Lessons</div>
       </NuxtLink>
