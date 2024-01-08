@@ -134,7 +134,6 @@ const focusInput = () => {
 }
 
 onClickOutside(inputFieldRef, focusInput)
-
 </script>
 
 <template>
@@ -165,26 +164,26 @@ onClickOutside(inputFieldRef, focusInput)
           </Switch>
         </SwitchGroup>
         <span class="isolate inline-flex rounded-md">
-          <button @click="toggleFontSize(3)" type="button" :class="toggleId === 3 ? 'bg-electric-violet-600 text-white border-none' : 'bg-white hover:bg-gray-50'" class="relative inline-flex items-center rounded-l-md border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">Small</button>
-          <button @click="toggleFontSize(2)" type="button" :class="toggleId === 2 ? 'bg-electric-violet-600 text-white border-none' : 'bg-white hover:bg-gray-50'" class="relative -ml-px inline-flex items-center border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">Medium</button>
-          <button @click="toggleFontSize(1)" type="button" :class="toggleId === 1 ? 'bg-electric-violet-600 text-white border-none' : 'bg-white hover:bg-gray-50'" class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">Large</button>
+          <button @click="toggleFontSize(3)" type="button" :class="toggleId === 3 ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'" class="relative inline-flex items-center rounded-l-md border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">Small</button>
+          <button @click="toggleFontSize(2)" type="button" :class="toggleId === 2 ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'" class="relative -ml-px inline-flex items-center border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">Medium</button>
+          <button @click="toggleFontSize(1)" type="button" :class="toggleId === 1 ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'" class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">Large</button>
         </span>
       </div>
       <!-- Progress bar -->
-      <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-3" :value="Math.floor((charIndex / loadParagraph.length) * 100)"  :color="typeInfo.wpmTag > 20 ? 'red' : 'purple'" size="lg" indicator>
+      <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-3" :value="Math.floor((charIndex / loadParagraph.length) * 100)"  :color="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'red' : 'purple'" size="lg" indicator>
         <template #indicator="{ percent }">
-          <div class="text-right" :style="{ width: `${percent}%` }">
-            <span :class="typeInfo.wpmTag > 20 ? 'text-red-600 text-xl transition-all ease-linear': 'text-purple-700 text-lg transition-all ease-linear'">
-              <div v-if="typeInfo.wpmTag > 20" class="fire">
+          <div :style="{ width: `${percent}%` }">
+            <div :class="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'text-red-600 text-xl': 'text-purple-500'" class="ml-5 text-lg transition-all ease-linear flex items-center justify-end">
+              <div v-if="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15)" class="fire">
                 <div class="flames">
                   <div class="flame"></div>
                   <div class="flame"></div>
                   <div class="flame"></div>
                   <div class="flame"></div>
                 </div>
-              </div>
-              {{ Math.floor(percent) }}%
-            </span>
+              </div> 
+              <div class="ml-1">{{ Math.floor(percent) }}%</div>
+            </div>
           </div>
         </template>
       </UProgress>
@@ -192,7 +191,7 @@ onClickOutside(inputFieldRef, focusInput)
       <div ref="typeBox" :class="toggleId === 1 ? 'text-3xl' : [toggleId === 3 ? 'text-xl' : 'text-2xl', !enabledDetail ? 'mt-6' : '']" class="overflow-y-auto overflow-x-hidden mt-2 max-h-64 px-5">
         <span v-for="(word, index) in loadParagraph" :key="index" class="px-[0.5px]"
           :class="[
-            word.active ? 'text-electric-violet-600 border-b-[3px] border-electric-violet-600 bg-electric-violet-100' : '', 
+            word.active ? 'text-electric-violet-500 border-b-[3px] border-electric-violet-500 bg-electric-violet-100' : '', 
             word.status === 'correct' ? 'text-green-600' : '', 
             word.status === 'incorrect' ? 'text-red-600 bg-pink-200' : ''
           ]">
@@ -206,20 +205,20 @@ onClickOutside(inputFieldRef, focusInput)
             <p class="text-lg">Start Time:</p>
             <span class="block text-[20px] ml-2">{{ typeInfo.startTime }}s</span>
           </li>
-          <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-600">
+          <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
             <p class="text-lg">Mistakes:</p>
             <span class="block text-[20px] ml-2">{{ typeInfo.mistakes }}</span>
           </li>
-          <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-600">
+          <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
             <p class="text-lg">WPM:</p>
             <span class="block text-[20px] ml-2">{{ typeInfo.wpmTag }}</span>
           </li>
-          <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-600">
+          <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
             <p class="text-lg">CPM:</p>
             <span class="block text-[20px] ml-2">{{ typeInfo.cpmTag }}</span>
           </li>
         </ul>
-        <button @click="resetGame" class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-electric-violet-600 transition-all hover:bg-electric-violet-500 active:scale-90">Try Again</button>
+        <button @click="resetGame" class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-electric-violet-500 transition-all hover:bg-electric-violet-600 active:scale-90">Try Again</button>
       </div>
     </div>
     <!-- Result pop-up -->

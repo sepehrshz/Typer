@@ -1,43 +1,57 @@
 <script setup lang="ts">
-    import { z } from "zod"
-    import type { FormSubmitEvent } from '#ui/types'
+  import { z } from "zod"
+  // import { useAxios } from '@nuxt/http';
+  import type { FormSubmitEvent } from '#ui/types'
+  // const axios = useAxios();
 
-    const schema = z.object({
-      fullName: z.string(),
-      userName: z.string(),
-      email: z.string().email('Invalid email'),
-      password: z.string().min(8, 'Must be at least 8 characters'),
-      confirmPassword: z.string().min(8, 'Must be at least 8 characters')
-        .refine((value) => value === state.password,{
-        message: 'Passwords do not match',
-        })
-    })
+  const schema = z.object({
+    fullName: z.string(),
+    userName: z.string(),
+    email: z.string().email('Invalid email'),
+    password: z.string().min(8, 'Must be at least 8 characters'),
+    confirmPassword: z.string().min(8, 'Must be at least 8 characters')
+      .refine((value) => value === state.password,{
+      message: 'Passwords do not match',
+      })
+  })
+  type Schema = z.output<typeof schema>
+  const state = reactive({
+    fullName: undefined,
+    userName: undefined,
+    email: undefined,
+    password: undefined,
+    confirmPassword: undefined
+  })
+  async function onSubmit (event: FormSubmitEvent<Schema>) {
+    console.log(event.data)
+    // signup()
+  }
+  const iconActive = ref(false)
+  const iconActive2 = ref(false)
+  const changeIcon = () => {
+      if (iconActive.value) iconActive.value = false
+      else iconActive.value = true
+  }
+  const changeIcon2 = () => {
+      if (iconActive2.value) iconActive2.value = false
+      else iconActive2.value = true
+  }
 
-    type Schema = z.output<typeof schema>
+  // const userData = ref({
+  //   fullName: state.fullName,
+  //   userName: state.userName,
+  //   email: state.email,
+  //   password: state.password
+  // });
 
-    const state = reactive({
-      fullName: undefined,
-      userName: undefined,
-      email: undefined,
-      password: undefined,
-      confirmPassword: undefined
-    })
-
-    async function onSubmit (event: FormSubmitEvent<Schema>) {
-      console.log(event.data)
-      
-    }
-
-    const iconActive = ref(false)
-    const iconActive2 = ref(false)
-    const changeIcon = () => {
-        if (iconActive.value) iconActive.value = false
-        else iconActive.value = true
-    }
-    const changeIcon2 = () => {
-        if (iconActive2.value) iconActive2.value = false
-        else iconActive2.value = true
-    }
+  // const signup = async () => {
+  //   try {
+  //     const response = await axios.post('http://localhost:3000/signup', userData.value);
+  //     console.log(response.data); // Handle the response from the server
+  //   } catch (error) {
+  //     console.error(error); // Handle any errors
+  //   }
+  // };
 </script>
 
 <template>
@@ -84,8 +98,8 @@
 </template>
 
 <style>
-    ::selection {
-        color: #fff;
-        background: #b800e6;
-    }
+  ::selection {
+    color: #fff;
+    background: #b800e6;
+  }
 </style>

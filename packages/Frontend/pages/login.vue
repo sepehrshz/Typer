@@ -56,8 +56,8 @@
 </template>
 
 <style>
-    ::selection {
-        color: #fff;
-        background: #b800e6;
-    }
+  ::selection {
+    color: #fff;
+    background: #b800e6;
+  }
 </style>

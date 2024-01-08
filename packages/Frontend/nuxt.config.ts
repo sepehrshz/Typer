@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "nuxt-typed-router",
     "@nuxt/ui",
     "@vueuse/nuxt",
+    // "@nuxtjs/axios",
   ],
   colorMode: {
     classSuffix: "",
