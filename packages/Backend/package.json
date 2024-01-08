@@ -1,25 +1,57 @@
 {
+  "type": "module",
   "name": "backend",
+  "description": "This project was bootstrapped with Fastify-CLI.",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
-    "dev": "nodemon server"
+  "main": "app.ts",
+  "directories": {
+    "test": "test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "@fastify/autoload": "^5.8.0",
+    "@fastify/sensible": "^5.5.0",
+    "@fastify/type-provider-typebox": "^4.0.0",
+    "@prisma/client": "^5.7.1",
+    "@sinclair/typebox": "^0.32.5",
+    "c8": "^9.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jest": "^27.6.1",
     "fastify": "^4.25.2",
-    "fastify-swagger": "^5.2.0",
-    "surrealdb.js": "^0.11.0",
-    "typescript": "^5.3.3",
-    "uuid": "^9.0.1"
+    "fastify-cli": "^6.0.1",
+    "fastify-plugin": "^4.5.1",
+    "fastify-prisma-client": "^6.0.0",
+    "fastify-tsconfig": "^2.0.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.1.1",
+    "prisma": "^5.7.1",
+    "rimraf": "^5.0.5",
+    "surrealdb.node": "^0.3.0",
+    "ts-api-utils": "^1.0.3",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@types/node": "^20.10.7",
-    "nodemon": "^3.0.2"
-  }
+    "@types/tap": "^15.0.11",
+    "c8": "^7.13.0",
+    "concurrently": "^8.2.2",
+    "fastify-tsconfig": "^2.0.0",
+    "ts-node": "^10.4.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "test": "npm run build:ts && tsc -p test/tsconfig.json && FASTIFY_AUTOLOAD_TYPESCRIPT=1 node --test --experimental-test-coverage --loader ts-node/esm test/**/*.ts",
+    "start": "npm run build:ts && fastify start -l info dist/app.js",
+    "build:ts": "tsc",
+    "watch:ts": "tsc -w",
+    "dev": "tsx ./src/app.ts -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
