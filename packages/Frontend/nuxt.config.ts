@@ -1,4 +1,3 @@
-
 export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
@@ -13,7 +12,6 @@ export default defineNuxtConfig({
     "nuxt-typed-router",
     "@nuxt/ui",
     "@vueuse/nuxt",
-    // "@nuxtjs/axios",
   ],
   colorMode: {
     classSuffix: "",
@@ -21,5 +19,4 @@ export default defineNuxtConfig({
   image: {
     // Options
   },
-  ui: {},
 });

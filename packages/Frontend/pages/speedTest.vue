@@ -170,7 +170,7 @@ onClickOutside(inputFieldRef, focusInput)
         </span>
       </div>
       <!-- Progress bar -->
-      <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-3" :value="Math.floor((charIndex / loadParagraph.length) * 100)"  :color="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'red' : 'purple'" size="lg" indicator>
+      <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-3" :value="Math.floor((charIndex / loadParagraph.length) * 100)"  :color="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'red' :'primary'" size="lg" indicator>
         <template #indicator="{ percent }">
           <div :style="{ width: `${percent}%` }">
             <div :class="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'text-red-600 text-xl': 'text-purple-500'" class="ml-5 text-lg transition-all ease-linear flex items-center justify-end">

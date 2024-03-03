@@ -1,8 +1,11 @@
 import { Static, Type } from '@sinclair/typebox'
 
 export const User = Type.Object({
+  userName: Type.String(),
   name: Type.String(),
-  mail: Type.Optional(Type.String({ format: 'email' })),
-})
+  password: Type.String(),
+  email: Type.String(),
+});
+
 
 export type UserType = Static<typeof User>
