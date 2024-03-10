@@ -37,10 +37,9 @@ const signup = async () => {
       userName: state.userName,
       email: state.email,
       name: state.fullName,
-      password: state.password
+      pass: state.password
     }
   })
-  console.log(response)
   router.push('/login');
 }
 

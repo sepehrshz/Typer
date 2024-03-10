@@ -2,6 +2,13 @@
 import { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 
+const user = useCookie<{
+  name: string,
+  email: string,
+  userName: string
+}
+>('user', { maxAge: 1000 })
+
 const schema = z.object({
   email: z.string(),
   password: z.string(),
@@ -10,8 +17,8 @@ const schema = z.object({
 type Schema = z.output<typeof schema>;
 
 const state = reactive({
-  email: '',
-  password: '',
+  email: "",
+  password: ""
 });
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
@@ -19,16 +26,25 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 }
 
 const login = async () => {
-  const response = await $fetch('http://localhost:3000/login', {
+  const response: {
+    userName: string,
+    email: string,
+    name: string,
+    pass: string
+  } = await $fetch('http://localhost:3000/login', {
     method: 'POST',
     body: {
       userName: '',
       email: state.email,
       name: '',
-      password: state.password
+      pass: state.password
     }
   })
-  console.log(response)
+  user.value = {
+    name: response.name,
+    email: response.email,
+    userName: response.userName
+  }
 }
 
 const iconActive = ref(false);
@@ -69,7 +85,7 @@ const changeIcon = () => {
       <div class="mt-5">
         Don't have any account?
         <span class="cursor-pointer text-electric-violet-500">
-          <NuxtLink to="./signup">Sign up</NuxtLink>
+          <NuxtLink to='./signup'>Sign up</NuxtLink>
         </span>
       </div>
     </UForm>
