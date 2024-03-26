@@ -4,7 +4,6 @@ import type { FormSubmitEvent } from '#ui/types'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
 const schema = z.object({
   fullName: z.string().min(4),
   userName: z.string().min(4),
@@ -37,7 +36,7 @@ const signup = async () => {
       userName: state.userName,
       email: state.email,
       name: state.fullName,
-      pass: state.password
+      password: state.password
     }
   })
   router.push('/login');
@@ -61,8 +60,13 @@ const changeIcon2 = () => {
 <template>
   <div
     class="flex items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-200">
+    <NuxtLink to="/">
+      <button
+        class="absolute top-6 flex justify-center items-center font-semibold left-6 z-10 w-40 h-12 rounded-xl bg-white">
+        Back to home
+      </button>
+    </NuxtLink>
     <div class="w-6/12 flex flex-col items-center justify-center">
-      <span class="text-white text-4xl w-5/6">Typer</span>
       <img class="w-[580px]" src="../assets/signup-pic.png">
     </div>
     <UForm :schema="schema" :state="state"
@@ -104,7 +108,7 @@ const changeIcon2 = () => {
       </UButton>
       <div class="mt-5">Already have an account?
         <span class="cursor-pointer text-electric-violet-500">
-          <NuxtLink to="./login">Log in</NuxtLink>
+          <NuxtLink to="/login">Log in</NuxtLink>
         </span>
       </div>
     </UForm>

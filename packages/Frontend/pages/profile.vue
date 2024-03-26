@@ -2,11 +2,15 @@
 import { z } from "zod"
 import type { FormSubmitEvent } from '#ui/types'
 
-const store = useUserStore();
+const user = useCookie<{
+  name: string,
+  email: string,
+  userName: string,
+  accessToken: string
+}
+>('user');
 
-const user = useCookie('user')
-
-const prevUserName: string = user.value.userName || "";
+let prevUserName: string = ""
 
 const schema = z.object({
   fullName: z.string(),
@@ -20,12 +24,19 @@ const schema = z.object({
 type Schema = z.output<typeof schema>
 
 const state = reactive({
-  fullName: user.value.name,
-  userName: user.value.userName,
-  email: user.value.email,
-  password: '',
-  confirmPassword: ''
+  fullName: "",
+  userName: "",
+  email: "",
+  password: "",
+  confirmPassword: ""
 })
+
+if (user.value) {
+  prevUserName = user.value.userName;
+  state.fullName = user.value.name;
+  state.userName = user.value.userName;
+  state.email = user.value.email;
+}
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   isChange.value = true;
@@ -33,20 +44,25 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 }
 
 const editProfile = async () => {
-  const response = await $fetch('http://localhost:3000/edit', {
+  const response: {
+    userName: string
+  } = await $fetch('http://localhost:3000/edit', {
     method: 'POST',
     body: {
       prevUserName: prevUserName,
       userName: state.userName,
       email: state.email,
       name: state.fullName,
-      pass: state.password
+      password: state.password,
+      accessToken: user.value.accessToken
     }
   })
+  prevUserName = response.userName;
   user.value = {
     name: state.fullName,
     email: state.email,
-    userName: state.userName
+    userName: state.userName,
+    accessToken: user.value.accessToken
   }
 }
 
@@ -62,6 +78,12 @@ const changeIcon = () => {
   else iconActive.value = true
 }
 
+const iconActive2 = ref(false)
+const changeIcon2 = () => {
+  if (iconActive2.value) iconActive2.value = false
+  else iconActive2.value = true
+}
+
 const isChange = ref(false)
 
 const isHover = ref(false)
@@ -72,7 +94,10 @@ const changeColor = (x: boolean) => {
 </script>
 
 <template>
-  <div class="relative w-full h-[100vh]">
+  <div v-show="!user">
+    <NuxtLink to="/login">haven't log in?</NuxtLink>
+  </div>
+  <div v-show="user" class="relative w-full h-[100vh]">
     <NuxtLink to="/">
       <button
         class="absolute top-6 flex justify-center items-center font-semibold left-6 z-10 w-40 h-12 rounded-xl bg-white">

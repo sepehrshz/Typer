@@ -6,6 +6,7 @@ export const User = Type.Object({
   password: Type.String(),
   email: Type.String(),
   prevUserName: Type.Optional(Type.String()),
+  accessToken: Type.Optional(Type.String()),
 });
 
 export type UserType = Static<typeof User>;

@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
 
 const user = useCookie<{
   name: string,
   email: string,
-  userName: string
+  userName: string,
+  accessToken: string,
+  refreshToken: string
 }
->('user', { maxAge: 1000 })
+>('user', { maxAge: 60 * 60 * 24 * 7 })
 
 const schema = z.object({
   email: z.string(),
@@ -26,25 +31,33 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 }
 
 const login = async () => {
-  const response: {
-    userName: string,
-    email: string,
-    name: string,
-    pass: string
-  } = await $fetch('http://localhost:3000/login', {
+  const response: [
+    {
+      userName: string,
+      email: string,
+      name: string,
+      password: string
+    },
+    accessToken: string,
+    refreshToken: string
+  ] = await $fetch('http://localhost:3000/login', {
     method: 'POST',
     body: {
       userName: '',
       email: state.email,
       name: '',
-      pass: state.password
+      password: state.password
     }
   })
+  console.log(response)
   user.value = {
-    name: response.name,
-    email: response.email,
-    userName: response.userName
+    name: response[0].name,
+    email: response[0].email,
+    userName: response[0].userName,
+    accessToken: response[1],
+    refreshToken: response[2]
   }
+  router.push('/');
 }
 
 const iconActive = ref(false);
@@ -57,8 +70,13 @@ const changeIcon = () => {
 <template>
   <div
     class="flex items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-200">
+    <NuxtLink to="/">
+      <button
+        class="absolute top-6 flex justify-center items-center font-semibold left-6 z-10 w-40 h-12 rounded-xl bg-white">
+        Back to home
+      </button>
+    </NuxtLink>
     <div class="w-6/12 flex flex-col items-center justify-center">
-      <span class="text-white text-4xl w-5/6">Typer</span>
       <img class="w-[580px]" src="../assets/signup-pic.png" />
     </div>
     <UForm :schema="schema" :state="state"
@@ -85,7 +103,7 @@ const changeIcon = () => {
       <div class="mt-5">
         Don't have any account?
         <span class="cursor-pointer text-electric-violet-500">
-          <NuxtLink to='./signup'>Sign up</NuxtLink>
+          <NuxtLink to='/signup'>Sign up</NuxtLink>
         </span>
       </div>
     </UForm>

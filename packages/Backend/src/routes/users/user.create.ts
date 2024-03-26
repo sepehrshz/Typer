@@ -1,15 +1,30 @@
 import { FastifyPluginAsync } from "fastify";
 import { UserType } from "./schema.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
+  // const authenticateToken = (req, res, next) => {
+  //   const authHeader: string = req.body.accessToken;
+  //   const token = authHeader;
+  //   if (token == null) return res.sendStatus(401);
+
+  //   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || " ", (error, user) => {
+  //     if (error) return res.sendStatus(403);
+  //     req.user = user;
+  //     next();
+  //   });
+  // };
+
+  const refreshTokens = [];
+
   //signup API
   fastify.post<{ Body: UserType; Reply: UserType }>(
     "/signup",
     async (request, reply) => {
       try {
-        const { userName, email, name, pass } = request.body;
-
+        const { userName, email, name } = request.body;
+        let password = request.body.password;
         const user = await fastify.prisma.user.findFirst({
           where: {
             OR: [{ email: email }, { userName: userName }],
@@ -24,8 +39,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
           throw new Error("Username has already taken");
         }
 
-        const hashedPassword = await bcrypt.hash(pass, 10);
-        const password = hashedPassword;
+        password = await bcrypt.hash(password, 10);
 
         const newUser = await fastify.prisma.user.create({
           data: {
@@ -35,7 +49,6 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
             password,
           },
         });
-
         reply.send(newUser);
       } catch (error) {
         console.error(error);
@@ -45,11 +58,11 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   );
 
   //login API
-  fastify.post<{ Body: UserType; Reply: UserType }>(
+  fastify.post<{ Body: UserType; Reply: [UserType, string, string] }>(
     "/login",
     async (request, reply) => {
       try {
-        const { email, pass } = request.body;
+        const { email, password } = request.body;
         const user = await fastify.prisma.user.findFirst({
           where: {
             OR: [{ email: email }, { userName: email }],
@@ -59,13 +72,16 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
           throw new Error("Invalid email or username");
         }
 
-        bcrypt.compare(pass, user.password, function (err, result) {
-          if (!result) {
-            throw new Error("Incorrect password");
-          }
-        });
+        const result = await bcrypt.compare(password, user.password);
 
-        reply.send(user);
+        if (!result) {
+          throw new Error("Incorrect password");
+        }
+
+        const accessToken = generateAccessToken(user);
+        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET!);
+        refreshTokens.push(refreshToken);
+        reply.send([user, accessToken, refreshToken]);
       } catch (error) {
         console.error(error);
         reply.status(500);
@@ -78,7 +94,8 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
     "/edit",
     async (request, reply) => {
       try {
-        const { prevUserName, userName, email, name, pass } = request.body;
+        const { prevUserName, userName, email, name, password, accessToken } =
+          request.body;
 
         const info = {
           name: name,
@@ -86,11 +103,17 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
           userName: userName,
         };
 
-        if (pass != "") {
-          console.log("lets hash");
-          const hashedPassword = await bcrypt.hash(pass, 10);
-          info.password = hashedPassword;
-        }
+        // if (password != "") {
+        //   info.password = await bcrypt.hash(password, 10);
+        // }
+
+        await jwt.verify(
+          accessToken!,
+          process.env.ACCESS_TOKEN_SECRET!,
+          (error, user) => {
+            if (error) throw new Error("Token invalid!");
+          }
+        );
 
         const updateUser = await fastify.prisma.user.update({
           where: {
@@ -127,6 +150,19 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
       }
     }
   );
+
+  const generateAccessToken = (user: {
+    id: string;
+    userName: string;
+    email: string;
+    name: string;
+    password: string;
+    avgSpeed: number;
+  }) => {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!, {
+      expiresIn: "120s",
+    });
+  };
 };
 
 export default userRoutes;

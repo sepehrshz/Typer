@@ -16,6 +16,7 @@
     "@sinclair/typebox": "^0.32.5",
     "c8": "^9.0.0",
     "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "^27.6.1",
@@ -36,13 +37,14 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.10.7",
     "@types/tap": "^15.0.11",
     "bcrypt": "^5.1.1",
     "c8": "^7.13.0",
     "concurrently": "^8.2.2",
     "fastify-tsconfig": "^2.0.0",
-    "prisma": "^5.8.0",
+    "prisma": "^5.10.2",
     "ts-node": "^10.4.0",
     "tsx": "^4.7.0",
     "typescript": "^5.2.2"
