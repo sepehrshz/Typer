@@ -8,32 +8,31 @@ datasource db {
 }
 
 model User {
-  id       String     @id @default(uuid())
-  userName String     @unique
+  userName String     @id
   email    String     @unique
   name     String
   password String
   avgSpeed Int        @default(0)
   role     Role       @default(BASIC)
-  Practice Practice[]
+  practice Practice[]
 }
 
 model Practice {
-  id         String  @id @default(uuid())
-  lesson     Lesson  @relation(fields: [lessonId], references: [id])
-  lessonId   String  @unique
-  user       User    @relation(fields: [userId], references: [id])
-  userId     String  @unique
-  avgSpeed   Int     @default(0)
-  isComplete Boolean
-  isEnable   Boolean
+  userLessonId String  @id
+  user         User    @relation(fields: [userId], references: [userName])
+  userId       String
+  lesson       Lesson  @relation(fields: [lessonId], references: [id])
+  lessonId     Int
+  avgSpeed     Int     @default(0)
+  isComplete   Boolean
+  isEnable     Boolean
 }
 
 model Lesson {
-  id       String    @id @default(uuid())
+  id       Int        @id
   name     String
   text     String
-  Practice Practice?
+  practice Practice[]
 }
 
 enum Role {

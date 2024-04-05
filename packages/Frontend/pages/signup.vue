@@ -7,11 +7,11 @@ const router = useRouter()
 const schema = z.object({
   fullName: z.string().min(4),
   userName: z.string().min(4),
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Must be at least 8 characters'),
-  confirmPassword: z.string().min(8, 'Must be at least 8 characters')
+  email: z.string().email("Invalid email"),
+  password: z.string().min(8, "Must be at least 8 characters"),
+  confirmPassword: z.string().min(8, "Must be at least 8 characters")
     .refine((value) => value === state.password, {
-      message: 'Passwords do not match',
+      message: "Passwords do not match",
     })
 })
 

@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "nuxt-typed-router",
     "@nuxt/ui",
     "@vueuse/nuxt",
+    "@nuxt/test-utils/module",
   ],
   colorMode: {
     classSuffix: "",

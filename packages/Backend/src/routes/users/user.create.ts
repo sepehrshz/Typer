@@ -1,7 +1,8 @@
 import { FastifyPluginAsync } from "fastify";
-import { UserType } from "./schema.js";
+import { UserType, PracticeType } from "./schema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { request } from "http";
 
 const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   // const authenticateToken = (req, res, next) => {
@@ -135,7 +136,15 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
     "/delete",
     async (request, reply) => {
       try {
-        const userName = request.body.userName;
+        const { userName, accessToken } = request.body;
+
+        await jwt.verify(
+          accessToken!,
+          process.env.ACCESS_TOKEN_SECRET!,
+          (error, user) => {
+            if (error) throw new Error("Token invalid!");
+          }
+        );
 
         const deleteUser = await fastify.prisma.user.delete({
           where: {
@@ -151,6 +160,91 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
     }
   );
 
+  //practice API
+  fastify.post<{ Body: PracticeType; Reply: PracticeType }>(
+    "/lessons/:id",
+    async (request, reply) => {
+      try {
+        const { userId, lessonId, avgSpeed, isComplete, accessToken } =
+          request.body;
+
+        const info = {
+          userId: userId,
+          lessonId: lessonId,
+          userLessonId: userId + lessonId.toString(),
+          avgSpeed: avgSpeed,
+          isComplete: isComplete,
+          isEnable: true,
+        };
+
+        await jwt.verify(
+          accessToken!,
+          process.env.ACCESS_TOKEN_SECRET!,
+          (error, user) => {
+            if (error) throw new Error("Token invalid!");
+          }
+        );
+
+        const updatePractice = await fastify.prisma.practice.upsert({
+          where: {
+            userLessonId: info.userLessonId,
+          },
+          update: info,
+          create: info,
+        });
+        console.log(updatePractice);
+        reply.send(updatePractice);
+      } catch (error) {
+        console.error(error);
+        reply.status(500);
+      }
+    }
+  );
+
+  //lessons API
+  fastify.post<{
+    Body: { userName: string; accessToken: string };
+    Reply: {
+      practice: {
+        isComplete: boolean;
+      }[];
+      id: number;
+      name: string;
+    }[];
+  }>("/lessons", async (request, reply) => {
+    try {
+      const { userName, accessToken } = request.body;
+
+      await jwt.verify(
+        accessToken!,
+        process.env.ACCESS_TOKEN_SECRET!,
+        (error, user) => {
+          if (error) throw new Error("Token invalid!");
+        }
+      );
+
+      const lessons = await fastify.prisma.lesson.findMany({
+        select: {
+          id: true,
+          name: true,
+          practice: {
+            select: {
+              isComplete: true,
+            },
+            where: {
+              userId: userName,
+            },
+          },
+        },
+      });
+
+      console.log(lessons);
+      reply.send(lessons);
+    } catch (error) {
+      console.error(error);
+      reply.status(500);
+    }
+  });
   const generateAccessToken = (user: {
     id: string;
     userName: string;
@@ -159,9 +253,10 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
     password: string;
     avgSpeed: number;
   }) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: "120s",
-    });
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
+    // ,}
+    // expiresIn: "120s",
+    // });
   };
 };
 

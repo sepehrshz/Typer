@@ -3,7 +3,6 @@ CREATE TYPE "Role" AS ENUM ('BASIC', 'ADMIN');
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
     "userName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -11,14 +10,15 @@ CREATE TABLE "User" (
     "avgSpeed" INTEGER NOT NULL DEFAULT 0,
     "role" "Role" NOT NULL DEFAULT 'BASIC',
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "User_pkey" PRIMARY KEY ("userName")
 );
 
 -- CreateTable
 CREATE TABLE "Practice" (
     "id" TEXT NOT NULL,
-    "lessonId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "lessonId" TEXT NOT NULL,
+    "userLessonId" TEXT NOT NULL,
     "avgSpeed" INTEGER NOT NULL DEFAULT 0,
     "isComplete" BOOLEAN NOT NULL,
     "isEnable" BOOLEAN NOT NULL,
@@ -36,19 +36,13 @@ CREATE TABLE "Lesson" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_userName_key" ON "User"("userName");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Practice_lessonId_key" ON "Practice"("lessonId");
+CREATE UNIQUE INDEX "Practice_userLessonId_key" ON "Practice"("userLessonId");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Practice_userId_key" ON "Practice"("userId");
+-- AddForeignKey
+ALTER TABLE "Practice" ADD CONSTRAINT "Practice_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userName") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Practice" ADD CONSTRAINT "Practice_lessonId_fkey" FOREIGN KEY ("lessonId") REFERENCES "Lesson"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Practice" ADD CONSTRAINT "Practice_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

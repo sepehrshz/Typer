@@ -9,4 +9,14 @@ export const User = Type.Object({
   accessToken: Type.Optional(Type.String()),
 });
 
+export const Practice = Type.Object({
+  userId: Type.String(),
+  lessonId: Type.Integer(),
+  avgSpeed: Type.Integer(),
+  isComplete: Type.Boolean(),
+  isEnable: Type.Optional(Type.Boolean()),
+  accessToken: Type.Optional(Type.String()),
+});
+
 export type UserType = Static<typeof User>;
+export type PracticeType = Static<typeof Practice>;
