@@ -20,9 +20,10 @@ const typedChar = ref<string>("")
 const letterIndex = ref<number>(0)
 const LessonBox = ref()
 const route = useRouter()
-const id = route.currentRoute.value.params?.id
+const id = route.currentRoute.value.params?.id;
 let isComplete = false;
 let ID = Number(id);
+
 const user = useCookie<{
   userName: string,
   accessToken: string
@@ -34,7 +35,6 @@ const typeInfo = ref<TypeInfo>({
   startTime: 0,
   mistakes: 0,
   wpmTag: 0,
-  cpmTag: 0
 })
 
 const focusInput = () => {
@@ -99,12 +99,11 @@ const initTyping = () => {
     if (charIndex.value != loadLesson.value.length) {
       loadLesson.value[charIndex.value].active = true
     }
-    typeInfo.value.cpmTag = charIndex.value - typeInfo.value.mistakes
   }
   if (charIndex.value === loadLesson.value.length) {
     loadLesson.value[charIndex.value - 1].active = false;
     typeInfo.value.resultWindow = true;
-    if (typeInfo.value.mistakes < 5) isComplete = true;
+    if (typeInfo.value.mistakes < 5 && typeInfo.value.startTime < 20) isComplete = true;
     saveInfo();
     clearInterval(timer)
     inputField.value = ""
@@ -121,7 +120,7 @@ const saveInfo = async () => {
       body: {
         userId: user.value.userName,
         accessToken: user.value.accessToken,
-        avgSpeed: typeInfo.value.cpmTag,
+        avgSpeed: typeInfo.value.wpmTag,
         isComplete: isComplete,
         lessonId: ID
       }
@@ -130,8 +129,13 @@ const saveInfo = async () => {
 }
 
 const initTimer = () => {
-  typeInfo.value.startTime++
-  typeInfo.value.startTime
+  typeInfo.value.startTime++;
+
+  let wpm = Math.round(
+    ((charIndex.value - typeInfo.value.mistakes) / 5 / (typeInfo.value.startTime)) * 60);
+  wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
+  typeInfo.value.wpmTag = wpm;
+  typeInfo.value.startTime;
 }
 
 const resetGame = () => {
@@ -146,7 +150,7 @@ const resetGame = () => {
   typeInfo.value.cpmTag = 0
   letterIndex.value = 0
   loadLesson.value = lessons[id - 1].value.split("").map((v) => ({ letter: v, active: false, status: "neutral" }))
-  focusInput()
+  focusInput();
   loadLesson.value[0].active = true
   activeKey.value = loadLesson.value[0].letter
   isLeftNeutral.value = false
@@ -245,8 +249,8 @@ const getRightHand = computed(() => {
               <span class="block text-[20px] ml-2">{{ typeInfo.mistakes }}</span>
             </li>
             <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
-              <p class="text-lg">CPM:</p>
-              <span class="block text-[20px] ml-2">{{ typeInfo.cpmTag }}</span>
+              <p class="text-lg">WPM:</p>
+              <span class="block text-[20px] ml-2">{{ typeInfo.wpmTag }}</span>
             </li>
           </ul>
           <button @click="resetGame"
@@ -265,7 +269,7 @@ const getRightHand = computed(() => {
         <Keyboard :active-key="activeKey" />
       </div>
       <!-- Result pop-up -->
-      <ResultPopup :type-info="typeInfo" @try-again="resetGame" :isWpm="false" />
+      <ResultPopup :type-info="typeInfo" @try-again="resetGame" />
     </div>
   </div>
 </template>

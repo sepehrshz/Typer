@@ -15,6 +15,23 @@ model User {
   avgSpeed Int        @default(0)
   role     Role       @default(BASIC)
   practice Practice[]
+  test     Test[]
+}
+
+model Test {
+  userParagraphId String    @id
+  speed           Int
+  paragraph       Paragraph @relation(fields: [paragraphId], references: [id])
+  paragraphId     Int
+  user            User      @relation(fields: [userId], references: [userName])
+  userId          String
+}
+
+model Paragraph {
+  id   Int    @id
+  size Size
+  text String
+  test Test[]
 }
 
 model Practice {
@@ -24,8 +41,7 @@ model Practice {
   lesson       Lesson  @relation(fields: [lessonId], references: [id])
   lessonId     Int
   avgSpeed     Int     @default(0)
-  isComplete   Boolean
-  isEnable     Boolean
+  isComplete   Boolean @default(false)
 }
 
 model Lesson {
@@ -38,4 +54,10 @@ model Lesson {
 enum Role {
   BASIC
   ADMIN
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
 }

@@ -6,11 +6,10 @@ import { CheckIcon } from '@heroicons/vue/24/outline'
 import type { TypeInfo } from "@/types/index"
 
 const props = defineProps<{
-  typeInfo: TypeInfo,
-  isWpm: boolean
+  typeInfo: TypeInfo
 }>();
 
-const { resultWindow, startTime, mistakes, cpmTag, wpmTag } = toRefs(props.typeInfo)
+const { resultWindow, startTime, mistakes, wpmTag } = toRefs(props.typeInfo)
 
 </script>
 
@@ -46,20 +45,21 @@ const { resultWindow, startTime, mistakes, cpmTag, wpmTag } = toRefs(props.typeI
                     <span class="flex flex-row justify-between"><span class="flex items-center">
                         <Icon size="18px" name="fluent-emoji:cross-mark" />&nbsp;Mistakes:
                       </span>&nbsp;{{ mistakes }}</span>
-                    <span v-if="isWpm" class="flex flex-row justify-between"><span class="flex items-center">
+                    <span class="flex flex-row justify-between"><span class="flex items-center">
                         <Icon size="18px" name="fluent-emoji:antenna-bars" />&nbsp;WPM:
                       </span>&nbsp;{{ wpmTag }}</span>
-                    <span class="flex flex-row justify-between"><span class="flex items-center">
-                        <Icon size="18px" name="fluent-emoji:bar-chart" />&nbsp;CPM:
-                      </span>&nbsp;{{ cpmTag }}</span>
                   </div>
                 </div>
               </div>
               <div class="inline-block mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                <button type="button"
+                <div
                   class="outline-none inline-flex w-full justify-center rounded-md bg-electric-violet-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-electric-violet-700  sm:col-start-2 sm:text-sm">
-                  <NuxtLink to="/lessons"> Go to dashboard</NuxtLink>
-                </button>
+                  <NuxtLink to="/lessons" class="w-full h-full flex justify-center items-center outline-none sty">
+                    <button type="button" class="outline-none focus:outline-none">
+                      Go to lessons page
+                    </button>
+                  </NuxtLink>
+                </div>
                 <button type="button"
                   class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50  sm:col-start-1 sm:mt-0 sm:text-sm"
                   @click="$emit('tryAgain')">Try again</button>

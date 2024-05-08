@@ -3,5 +3,5 @@ export interface TypeInfo {
   startTime: number;
   mistakes: number;
   wpmTag: number;
-  cpmTag: number;
+  accuracy: number;
 }

@@ -1,22 +1,10 @@
 import { FastifyPluginAsync } from "fastify";
-import { UserType, PracticeType } from "./schema.js";
+import { UserType, PracticeType, TestType, SizeEnum } from "./schema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { request } from "http";
+import { Prisma } from "@prisma/client";
 
 const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
-  // const authenticateToken = (req, res, next) => {
-  //   const authHeader: string = req.body.accessToken;
-  //   const token = authHeader;
-  //   if (token == null) return res.sendStatus(401);
-
-  //   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || " ", (error, user) => {
-  //     if (error) return res.sendStatus(403);
-  //     req.user = user;
-  //     next();
-  //   });
-  // };
-
   const refreshTokens = [];
 
   //signup API
@@ -78,8 +66,8 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
         if (!result) {
           throw new Error("Incorrect password");
         }
-
-        const accessToken = generateAccessToken(user);
+        const userWithoutPassword = (({ password, ...rest }) => rest)(user);
+        const accessToken = generateAccessToken(userWithoutPassword);
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET!);
         refreshTokens.push(refreshToken);
         reply.send([user, accessToken, refreshToken]);
@@ -174,9 +162,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
           userLessonId: userId + lessonId.toString(),
           avgSpeed: avgSpeed,
           isComplete: isComplete,
-          isEnable: true,
         };
-
         await jwt.verify(
           accessToken!,
           process.env.ACCESS_TOKEN_SECRET!,
@@ -184,14 +170,23 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
             if (error) throw new Error("Token invalid!");
           }
         );
-
+        const prePractice = await fastify.prisma.practice.findUnique({
+          where: {
+            userLessonId: info.userLessonId,
+          },
+        });
+        if (prePractice && prePractice.avgSpeed > avgSpeed)
+          info.avgSpeed = prePractice.avgSpeed;
+        const infoTrueIsComplete = { ...info };
+        infoTrueIsComplete.isComplete = true;
         const updatePractice = await fastify.prisma.practice.upsert({
           where: {
             userLessonId: info.userLessonId,
           },
-          update: info,
+          update: !prePractice?.isComplete ? info : infoTrueIsComplete,
           create: info,
         });
+
         console.log(updatePractice);
         reply.send(updatePractice);
       } catch (error) {
@@ -245,12 +240,109 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
       reply.status(500);
     }
   });
+
+  //get paragraph API
+  fastify.post<{
+    Body: { size: string };
+    Reply: { text: string; id: Number };
+  }>("/getParagraph", async (request, reply) => {
+    try {
+      const { size } = request.body;
+      let paragraphSize = "MEDIUM";
+      if (size == "SMALL") paragraphSize = "SMALL";
+      if (size == "LARGE") paragraphSize = "LARGE";
+
+      const paragraphCount = await fastify.prisma.paragraph.count({
+        where: {
+          size: paragraphSize as SizeEnum,
+        },
+      });
+      const skip = Math.floor(Math.random() * paragraphCount);
+      const randomParagraph = await fastify.prisma.paragraph.findMany({
+        where: {
+          size: paragraphSize as SizeEnum,
+        },
+        take: 1,
+        skip: skip,
+        orderBy: {
+          id: "desc",
+        },
+      });
+
+      const info = {
+        id: randomParagraph[0].id || -1,
+        text: randomParagraph[0].text || "",
+      };
+
+      reply.send(info);
+    } catch (error) {
+      console.log(error);
+      reply.status(500);
+    }
+  });
+
+  //test API
+  fastify.post<{
+    Body: TestType;
+    Reply: {
+      userId: string;
+      speed: number;
+    };
+  }>("/speedTest", async (request, reply) => {
+    try {
+      const { userId, paragraphId, size, speed, accessToken } = request.body;
+
+      await jwt.verify(
+        accessToken!,
+        process.env.ACCESS_TOKEN_SECRET!,
+        (error, user) => {
+          if (error) throw new Error("Token invalid!");
+        }
+      );
+
+      const info = {
+        userParagraphId: userId + paragraphId.toString(),
+        speed: speed,
+        size: size,
+        userId: userId,
+        paragraphId: paragraphId,
+      };
+
+      const test = await fastify.prisma.test.findUnique({
+        where: {
+          userParagraphId: info.userParagraphId,
+        },
+      });
+
+      if (test && test.speed > speed) info.speed = test.speed;
+
+      const updateTest = await fastify.prisma.test.upsert({
+        where: {
+          userParagraphId: info.userParagraphId,
+        },
+        update: {
+          speed: info.speed,
+        },
+        create: {
+          userParagraphId: info.userParagraphId,
+          speed: info.speed,
+          userId: info.userId,
+          paragraphId: info.paragraphId || -1,
+        },
+      });
+
+      console.log(updateTest);
+      reply.send({ userId, speed });
+    } catch (error) {
+      console.error(error);
+      reply.status(500);
+    }
+  });
+
   const generateAccessToken = (user: {
-    id: string;
     userName: string;
     email: string;
     name: string;
-    password: string;
     avgSpeed: number;
   }) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
