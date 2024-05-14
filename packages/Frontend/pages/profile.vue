@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { z } from "zod"
 import type { FormSubmitEvent } from '#ui/types'
+import defaultProfile from '../assets/profile.png'
 
 const user = useCookie<{
   name: string,
   email: string,
   userName: string,
-  accessToken: string
+  accessToken: string,
+  image: string,
 }
 >('user');
 
@@ -41,6 +43,7 @@ if (user.value) {
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   isChange.value = true;
   editProfile();
+  uploadProfileImage();
 }
 
 const editProfile = async () => {
@@ -62,7 +65,8 @@ const editProfile = async () => {
     name: state.fullName,
     email: state.email,
     userName: state.userName,
-    accessToken: user.value.accessToken
+    accessToken: user.value.accessToken,
+    image: user.value.image,
   }
 }
 
@@ -91,6 +95,18 @@ const changeColor = (x: boolean) => {
   if (x) isHover.value = true
   else isHover.value = false
 }
+
+const fileInput = ref<HTMLInputElement>();
+const image = ref();
+
+const uploadProfileImage = () => {
+  if (fileInput.value?.files) {
+    image.value = fileInput.value.files[0];
+  }
+  user.value.image = URL.createObjectURL(image.value);
+  URL.revokeObjectURL(image.value);
+}
+
 </script>
 
 <template>
@@ -111,7 +127,14 @@ const changeColor = (x: boolean) => {
       <div
         class="absolute flex justify-center items-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full"
         style="background-image: linear-gradient(to right, rgb(210, 87, 251) , rgb(210, 87, 251));">
-        <img class="w-10/12 h-10/12 z-20 rounded-full" src="../assets/SepehrFunko.jpg">
+        <img class="w-10/12 h-10/12 z-20 rounded-full" :src="user.image ? user.image : defaultProfile" />
+        <button
+          class="h-12 w-12 cursor-pointer bg-white rounded-full flex justify-center items-center absolute bottom-2/3 left-2/3 z-30">
+          <input class="opacity-0 h-full w-full cursor-pointer" accept="image/*" :max-size="5 * 1024 * 1024" type="file"
+            ref="fileInput" @input="() => uploadProfileImage" />
+          <file-pond></file-pond>
+          <Icon class="absolute h-5 w-5 cursor-pointer" name="simple-line-icons:pencil" color="black" />
+        </button>
       </div>
       <UForm :schema="schema" :state="state" class="w-full h-full flex flex-col mt-5 items-center justify-evenly"
         @submit="onSubmit">
@@ -126,10 +149,10 @@ const changeColor = (x: boolean) => {
 
           <UFormGroup label="Confirm New Password" name="confirmPassword" class="w-5/12 relative">
             <UInput v-model="state.confirmPassword" placeholder="Minimum 8 charachters" size="lg"
-              :type="iconActive ? 'text' : 'password'" name="password"
+              :type="iconActive2 ? 'text' : 'password'" name="password"
               class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
-            <Icon @click="() => changeIcon()" class="cursor-pointer absolute right-2 top-3" size="20px"
-              :name="iconActive ? 'formkit:eye' : 'formkit:hidden'" color="black" />
+            <Icon @click="() => changeIcon2()" class="cursor-pointer absolute right-2 top-3" size="20px"
+              :name="iconActive2 ? 'formkit:eye' : 'formkit:hidden'" color="black" />
           </UFormGroup>
 
           <UFormGroup label="Full name" name="fullName" class="w-5/12">

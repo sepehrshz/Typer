@@ -1,3 +1,15 @@
+<script setup>
+import defaultProfile from '../assets/profile.png'
+
+const userProfile = ref("");
+const user = useCookie('user');
+if (user) userProfile.value = user.image;
+else userProfile.value = defaultProfile;
+
+const logout = () => {
+  user.value = null;
+}
+</script>
 <template>
   <div class="relative z-20 flex items-center h-20 w-full bg-gradient-to-r from-gray-500 to-gray-400 text-white">
     <div class="w-1/4 pl-10">Typer</div>
@@ -18,7 +30,7 @@
         <NuxtLink to="/">Logout</NuxtLink>
       </button>
       <NuxtLink to="/profile">
-        <img src="https://api.dicebear.com/7.x/adventurer/svg?flip=false&rotate=0&scale=100&size=64" class="h-12">
+        <img src="userProfile" class="h-12 rounded-xl" />
       </NuxtLink>
     </div>
     <div v-show="!user" class="w-1/4 flex justify-center">
@@ -34,11 +46,3 @@
   </div>
   <slot />
 </template>
-
-<script setup>
-const user = useCookie('user')
-
-const logout = () => {
-  user.value = null;
-}
-</script>

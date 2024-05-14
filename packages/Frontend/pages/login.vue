@@ -2,7 +2,9 @@
 import { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 import { useRouter } from 'vue-router'
+import ResetPassword from "~/components/ResetPassword.vue";
 
+const isForget = ref(true);
 const router = useRouter();
 
 const user = useCookie<{
@@ -10,12 +12,13 @@ const user = useCookie<{
   email: string,
   userName: string,
   accessToken: string,
-  refreshToken: string
+  refreshToken: string,
+  image: string,
 }
 >('user', { maxAge: 60 * 60 * 24 * 7 })
 
 const schema = z.object({
-  email: z.string(),
+  email: z.string().email("Invalid email"),
   password: z.string(),
 });
 
@@ -72,7 +75,7 @@ const changeIcon = () => {
     class="flex items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-200">
     <NuxtLink to="/">
       <button
-        class="absolute top-6 flex justify-center items-center font-semibold left-6 z-10 w-40 h-12 rounded-xl bg-white">
+        class="absolute top-6 flex justify-center items-center font-semibold left-6 z-20 w-40 h-12 rounded-xl bg-white">
         Back to home
       </button>
     </NuxtLink>
@@ -106,7 +109,15 @@ const changeIcon = () => {
           <NuxtLink to='/signup'>Sign up</NuxtLink>
         </span>
       </div>
+      <div>
+        Forget password?
+        <span class="cursor-pointer text-electric-violet-500">
+        </span>
+      </div>
     </UForm>
+    <div class="backdrop-blur-sm absolute h-full w-full flex justify-center items-center">
+    </div>
+    <ResetPassword class="z-20 absolute left-1/2 -translate-x-1/2" :isForget="isForget" />
   </div>
 </template>
 

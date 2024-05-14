@@ -2,7 +2,10 @@ import { FastifyPluginAsync } from "fastify";
 import { UserType, PracticeType, TestType, SizeEnum } from "./schema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Prisma } from "@prisma/client";
+import nodeoutlook from "nodejs-nodemailer-outlook";
+import { hotp, authenticator } from "otplib";
+
+const counter = 15 * 60;
 
 const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   const refreshTokens = [];
@@ -338,6 +341,67 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
       reply.status(500);
     }
   });
+
+  //send email API
+  fastify.post<{ Body: { email: string }; Reply: string }>(
+    "/sendEmail",
+    async (request, reply) => {
+      try {
+        const { email } = request.body;
+        const user = await fastify.prisma.user.findUnique({
+          where: { email },
+        });
+        if (!user) {
+          console.log("User not found!");
+          return reply.status(404);
+        }
+        const secret = authenticator.generate(process.env.ACCESS_TOKEN_SECRET!);
+        const token = hotp.generate(secret, counter);
+        fastify.prisma.user
+          .update({
+            where: { email },
+            data: { passwordToken: secret },
+          })
+          .catch();
+        nodeoutlook.sendEmail({
+          auth: {
+            user: "sepehrtyper@outlook.com",
+            pass: "sepehr1382",
+          },
+          from: "sepehrtyper@outlook.com",
+          to: email,
+          subject: "Reset your password",
+          text: `Enter this code in website the field: ${token}`,
+        });
+        reply.send(`Reset email code: ${token}`);
+        reply.status(200);
+      } catch (error) {
+        console.error(error);
+        reply.status(500);
+      }
+    }
+  );
+
+  //reset password API
+  fastify.post<{ Body: { token: string; email: string }; Reply: string }>(
+    "/sendToken",
+    async (request, reply) => {
+      try {
+        const { token, email } = request.body;
+        const user = await fastify.prisma.user.findUnique({
+          where: { email: email },
+        });
+        const secret = user?.passwordToken!;
+        const isValid = hotp.verify({ token, secret, counter });
+        if (!isValid) throw Error("Invalid Token!");
+        reply.send("Nice");
+      } catch (error) {
+        console.error(error);
+        reply.send("Invalid code");
+        reply.status(500);
+      }
+    }
+  );
 
   const generateAccessToken = (user: {
     userName: string;

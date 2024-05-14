@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  userName String     @id
-  email    String     @unique
-  name     String
-  password String
-  avgSpeed Int        @default(0)
-  role     Role       @default(BASIC)
-  practice Practice[]
-  test     Test[]
+  userName      String     @id
+  email         String     @unique
+  name          String
+  password      String
+  avgSpeed      Int        @default(0)
+  role          Role       @default(BASIC)
+  practice      Practice[]
+  test          Test[]
+  passwordToken String?
 }
 
 model Test {
