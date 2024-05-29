@@ -3,8 +3,15 @@ import { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 import { useRouter } from 'vue-router'
 import ResetPassword from "~/components/ResetPassword.vue";
+import { onClickOutside } from '@vueuse/core';
 
-const isForget = ref(true);
+const clickOutsideTarget = ref(null);
+onClickOutside(clickOutsideTarget, () => isForget.value = false)
+
+const isForget = ref(false);
+const isValid = () => {
+  isForget.value = false;
+}
 const router = useRouter();
 
 const user = useCookie<{
@@ -111,13 +118,17 @@ const changeIcon = () => {
       </div>
       <div>
         Forget password?
-        <span class="cursor-pointer text-electric-violet-500">
+        <span @click="() => isForget = true" class="cursor-pointer text-electric-violet-500">
+          Reset password
         </span>
       </div>
     </UForm>
-    <div class="backdrop-blur-sm absolute h-full w-full flex justify-center items-center">
+    <div v-if="isForget" class="backdrop-blur-sm absolute h-full w-full flex justify-center items-center">
     </div>
-    <ResetPassword class="z-20 absolute left-1/2 -translate-x-1/2" :isForget="isForget" />
+    <transition name="fade">
+      <ResetPassword v-if="isForget" class="z-20 absolute left-1/2 -translate-x-1/2" ref="clickOutsideTarget"
+        @is-valid="isValid" />
+    </transition>
   </div>
 </template>
 

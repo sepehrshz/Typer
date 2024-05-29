@@ -89,15 +89,20 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
         const { prevUserName, userName, email, name, password, accessToken } =
           request.body;
 
+        const user = await fastify.prisma.user.findUnique({
+          where: { userName: prevUserName },
+        });
+
         const info = {
           name: name,
           email: email,
           userName: userName,
+          password: user?.password,
         };
 
-        // if (password != "") {
-        //   info.password = await bcrypt.hash(password, 10);
-        // }
+        if (password != "") {
+          info.password = await bcrypt.hash(password, 10);
+        }
 
         await jwt.verify(
           accessToken!,
@@ -382,7 +387,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
     }
   );
 
-  //reset password API
+  //reset password token validation API
   fastify.post<{ Body: { token: string; email: string }; Reply: string }>(
     "/sendToken",
     async (request, reply) => {
@@ -393,6 +398,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
         });
         const secret = user?.passwordToken!;
         const isValid = hotp.verify({ token, secret, counter });
+
         if (!isValid) throw Error("Invalid Token!");
         reply.send("Nice");
       } catch (error) {
@@ -402,6 +408,41 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
       }
     }
   );
+
+  //reset password API
+  fastify.post<{
+    Body: { email: string; password: string; token: string };
+    Reply: { email: string; password: string };
+  }>("/resetPassword", async (request, reply) => {
+    try {
+      const { email, token } = request.body;
+      let password = request.body.password;
+
+      const user = await fastify.prisma.user.findUnique({
+        where: { email: email },
+      });
+      const secret = user?.passwordToken!;
+      const isValid = hotp.verify({ token, secret, counter });
+      if (!isValid) throw Error("Invalid Token!");
+
+      password = await bcrypt.hash(password, 10);
+
+      const updateUser = await fastify.prisma.user.update({
+        where: {
+          email: email,
+        },
+        data: { password },
+        select: {
+          email: true,
+        },
+      });
+
+      reply.send(updateUser);
+    } catch (error) {
+      console.error(error);
+      reply.status(500);
+    }
+  });
 
   const generateAccessToken = (user: {
     userName: string;

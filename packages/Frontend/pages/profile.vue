@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { z } from "zod"
 import type { FormSubmitEvent } from '#ui/types'
-import defaultProfile from '../assets/profile.png'
+
 
 const user = useCookie<{
   name: string,
   email: string,
   userName: string,
   accessToken: string,
-  image: string,
 }
 >('user');
 
+const profileImage = ref(`https://avatar.iran.liara.run/public/?username=${user.value.userName}`);
 let prevUserName: string = ""
 
 const schema = z.object({
@@ -43,7 +43,6 @@ if (user.value) {
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   isChange.value = true;
   editProfile();
-  uploadProfileImage();
 }
 
 const editProfile = async () => {
@@ -66,8 +65,9 @@ const editProfile = async () => {
     email: state.email,
     userName: state.userName,
     accessToken: user.value.accessToken,
-    image: user.value.image,
   }
+  state.password = "";
+  state.confirmPassword = "";
 }
 
 const isShow = ref(false)
@@ -96,17 +96,6 @@ const changeColor = (x: boolean) => {
   else isHover.value = false
 }
 
-const fileInput = ref<HTMLInputElement>();
-const image = ref();
-
-const uploadProfileImage = () => {
-  if (fileInput.value?.files) {
-    image.value = fileInput.value.files[0];
-  }
-  user.value.image = URL.createObjectURL(image.value);
-  URL.revokeObjectURL(image.value);
-}
-
 </script>
 
 <template>
@@ -127,12 +116,9 @@ const uploadProfileImage = () => {
       <div
         class="absolute flex justify-center items-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full"
         style="background-image: linear-gradient(to right, rgb(210, 87, 251) , rgb(210, 87, 251));">
-        <img class="w-10/12 h-10/12 z-20 rounded-full" :src="user.image ? user.image : defaultProfile" />
+        <img class="w-10/12 h-10/12 z-20 rounded-full" :src="profileImage" />
         <button
           class="h-12 w-12 cursor-pointer bg-white rounded-full flex justify-center items-center absolute bottom-2/3 left-2/3 z-30">
-          <input class="opacity-0 h-full w-full cursor-pointer" accept="image/*" :max-size="5 * 1024 * 1024" type="file"
-            ref="fileInput" @input="() => uploadProfileImage" />
-          <file-pond></file-pond>
           <Icon class="absolute h-5 w-5 cursor-pointer" name="simple-line-icons:pencil" color="black" />
         </button>
       </div>
