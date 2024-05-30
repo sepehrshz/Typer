@@ -20,7 +20,7 @@ const user = useCookie<{
   userName: string,
   accessToken: string,
   refreshToken: string,
-  image: string,
+  avatarIndex: number,
 }
 >('user', { maxAge: 60 * 60 * 24 * 7 })
 
@@ -46,7 +46,8 @@ const login = async () => {
       userName: string,
       email: string,
       name: string,
-      password: string
+      password: string,
+      avatarIndex: number,
     },
     accessToken: string,
     refreshToken: string
@@ -65,7 +66,8 @@ const login = async () => {
     email: response[0].email,
     userName: response[0].userName,
     accessToken: response[1],
-    refreshToken: response[2]
+    refreshToken: response[2],
+    avatarIndex: response[0].avatarIndex,
   }
   router.push('/');
 }

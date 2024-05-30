@@ -1,7 +1,5 @@
 <script setup>
 const user = useCookie('user');
-const profileImage = ref("");
-if (user.value) profileImage.value = `https://avatar.iran.liara.run/public/?username=${user.value.userName}`;
 const logout = () => {
   user.value = null;
 }
@@ -26,7 +24,7 @@ const logout = () => {
         <NuxtLink to="/">Logout</NuxtLink>
       </button>
       <NuxtLink to="/profile">
-        <img :src="profileImage" class="h-12 rounded-xl" />
+        <img :src="`https://avatar.iran.liara.run/public/${user.avatarIndex}`" class="h-12 rounded-xl" />
       </NuxtLink>
     </div>
     <div v-show="!user" class="w-1/4 flex justify-center">

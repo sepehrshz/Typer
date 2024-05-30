@@ -28,7 +28,7 @@ getLessons();
             <div v-for="(lesson, index) in lessons" :key="index"
                 :class="[lesson.practice[0]?.isComplete ? 'hover: border-green-500' : 'hover: border-electric-violet-500']"
                 class="flex flex-col items-center cursor-pointer h-36 w-36 bg-white rounded-md transition-all
-                ease-linear hover:scale-110 hover:border-2">
+                ease-linear duration-200 hover:scale-110 hover:border-2">
                 <NuxtLink class="w-full flex flex-col items-center" :to="`/lessons/${index + 1}`">
                     <span :class="[lesson.practice[0]?.isComplete ? 'bg-green-500'
                         : 'bg-electric-violet-500']" class="flex justify-center text-white h-6 w-8 rounded-b-md">{{

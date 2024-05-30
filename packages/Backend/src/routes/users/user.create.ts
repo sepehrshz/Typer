@@ -32,6 +32,11 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
         }
 
         password = await bcrypt.hash(password, 10);
+        const avatars = [
+          15, 46, 41, 4, 43, 38, 8, 37, 13, 19, 45, 51, 88, 55, 57, 62, 95, 85,
+          64, 90,
+        ];
+        const avatarIndex = Math.floor(Math.random() * avatars.length);
 
         const newUser = await fastify.prisma.user.create({
           data: {
@@ -39,6 +44,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
             name,
             userName,
             password,
+            avatarIndex,
           },
         });
         reply.send(newUser);
@@ -86,8 +92,15 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
     "/edit",
     async (request, reply) => {
       try {
-        const { prevUserName, userName, email, name, password, accessToken } =
-          request.body;
+        const {
+          prevUserName,
+          userName,
+          email,
+          name,
+          password,
+          accessToken,
+          avatarIndex,
+        } = request.body;
 
         const user = await fastify.prisma.user.findUnique({
           where: { userName: prevUserName },
@@ -98,6 +111,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
           email: email,
           userName: userName,
           password: user?.password,
+          avatarIndex: avatarIndex,
         };
 
         if (password != "") {

@@ -2,16 +2,17 @@
 import { z } from "zod"
 import type { FormSubmitEvent } from '#ui/types'
 
-
 const user = useCookie<{
   name: string,
   email: string,
   userName: string,
+  avatarIndex: number,
   accessToken: string,
 }
 >('user');
 
-const profileImage = ref(`https://avatar.iran.liara.run/public/?username=${user.value.userName}`);
+const avatarIndex = ref(user.value.avatarIndex);
+
 let prevUserName: string = ""
 
 const schema = z.object({
@@ -56,7 +57,8 @@ const editProfile = async () => {
       email: state.email,
       name: state.fullName,
       password: state.password,
-      accessToken: user.value.accessToken
+      accessToken: user.value.accessToken,
+      avatarIndex: avatarIndex.value,
     }
   })
   prevUserName = response.userName;
@@ -65,6 +67,7 @@ const editProfile = async () => {
     email: state.email,
     userName: state.userName,
     accessToken: user.value.accessToken,
+    avatarIndex: avatarIndex.value,
   }
   state.password = "";
   state.confirmPassword = "";
@@ -90,12 +93,13 @@ const changeIcon2 = () => {
 
 const isChange = ref(false)
 
-const isHover = ref(false)
-const changeColor = (x: boolean) => {
-  if (x) isHover.value = true
-  else isHover.value = false
+const shouldShowAvatar = ref(false);
+const toggleAvatarWindow = (index = 15) => {
+  if (shouldShowAvatar.value) {
+    avatarIndex.value = index;
+  }
+  shouldShowAvatar.value = !shouldShowAvatar.value;
 }
-
 </script>
 
 <template>
@@ -116,8 +120,8 @@ const changeColor = (x: boolean) => {
       <div
         class="absolute flex justify-center items-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full"
         style="background-image: linear-gradient(to right, rgb(210, 87, 251) , rgb(210, 87, 251));">
-        <img class="w-10/12 h-10/12 z-20 rounded-full" :src="profileImage" />
-        <button
+        <img class="w-10/12 h-10/12 z-20 rounded-full" :src="`https://avatar.iran.liara.run/public/${avatarIndex}`" />
+        <button @click="() => toggleAvatarWindow()"
           class="h-12 w-12 cursor-pointer bg-white rounded-full flex justify-center items-center absolute bottom-2/3 left-2/3 z-30">
           <Icon class="absolute h-5 w-5 cursor-pointer" name="simple-line-icons:pencil" color="black" />
         </button>
@@ -169,6 +173,9 @@ const changeColor = (x: boolean) => {
         </div>
       </UForm>
     </div>
+    <Transition name="bounce">
+      <Avatar v-if="shouldShowAvatar" @close-window="toggleAvatarWindow" />
+    </Transition>
     <DeleteAccountPopup :isShow="isShow" :userName="userName" @updateIsShow="isShow = $event" />
   </div>
 </template>

@@ -16,6 +16,7 @@ model User {
   role          Role       @default(BASIC)
   practice      Practice[]
   test          Test[]
+  avatarIndex   Int
   passwordToken String?
 }
 

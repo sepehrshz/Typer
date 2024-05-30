@@ -7,6 +7,7 @@ export const User = Type.Object({
   email: Type.String(),
   prevUserName: Type.Optional(Type.String()),
   accessToken: Type.Optional(Type.String()),
+  avatarIndex: Type.Integer(),
 });
 
 export const Practice = Type.Object({

@@ -176,8 +176,9 @@ const resetPassword = async () => {
     transition: all 0.4s;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+    transition: all 0.4s;
 }
 </style>
