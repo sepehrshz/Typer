@@ -25,7 +25,7 @@ const user = useCookie<{
 >('user', { maxAge: 60 * 60 * 24 * 7 })
 
 const schema = z.object({
-  email: z.string().email("Invalid email"),
+  email: z.string(),
   password: z.string(),
 });
 
@@ -127,10 +127,10 @@ const changeIcon = () => {
     </UForm>
     <div v-if="isForget" class="backdrop-blur-sm absolute h-full w-full flex justify-center items-center">
     </div>
-    <transition name="fade">
+    <Transition name="bounce">
       <ResetPassword v-if="isForget" class="z-20 absolute left-1/2 -translate-x-1/2" ref="clickOutsideTarget"
         @is-valid="isValid" />
-    </transition>
+    </Transition>
   </div>
 </template>
 

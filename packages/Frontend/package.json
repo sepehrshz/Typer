@@ -46,6 +46,8 @@
     "@pinia/nuxt": "^0.5.1",
     "@types/yup": "^0.32.0",
     "dotenv": "^16.4.5",
+    "echarts": "^5.5.0",
+    "flag-icons": "^7.2.3",
     "jsonwebtoken": "^9.0.2",
     "pinia": "^2.1.7",
     "socket.io": "^4.7.2",

@@ -175,16 +175,9 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
     "/lessons/:id",
     async (request, reply) => {
       try {
-        const { userId, lessonId, avgSpeed, isComplete, accessToken } =
+        const { userId, lessonId, avgSpeed, accuracy, date, accessToken } =
           request.body;
-
-        const info = {
-          userId: userId,
-          lessonId: lessonId,
-          userLessonId: userId + lessonId.toString(),
-          avgSpeed: avgSpeed,
-          isComplete: isComplete,
-        };
+        let isComplete = request.body.isComplete;
         await jwt.verify(
           accessToken!,
           process.env.ACCESS_TOKEN_SECRET!,
@@ -192,25 +185,47 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
             if (error) throw new Error("Token invalid!");
           }
         );
-        const prePractice = await fastify.prisma.practice.findUnique({
+        const prePractice = await fastify.prisma.practice.findMany({
           where: {
-            userLessonId: info.userLessonId,
+            userId,
+            lessonId,
           },
+          orderBy: {
+            id: "desc",
+          },
+          select: { isComplete: true },
+          take: 1,
         });
-        if (prePractice && prePractice.avgSpeed > avgSpeed)
-          info.avgSpeed = prePractice.avgSpeed;
-        const infoTrueIsComplete = { ...info };
-        infoTrueIsComplete.isComplete = true;
-        const updatePractice = await fastify.prisma.practice.upsert({
-          where: {
-            userLessonId: info.userLessonId,
+        if (prePractice[0] && prePractice[0].isComplete) isComplete = true;
+        // if (prePractice[0] && prePractice[0].avgSpeed > avgSpeed)
+        //   info.avgSpeed = prePractice[0].avgSpeed;
+        // const infoTrueIsComplete = { ...info };
+        // infoTrueIsComplete.isComplete = true;
+        const newPractice = await fastify.prisma.practice.create({
+          // where: {
+          //   userId_lessonId_id: {
+          //     userId: prePractice[0].userId,
+          //     lessonId: prePractice[0].lessonId,
+          //     id: prePractice[0].id,
+          //   },
+          // },
+          data: {
+            id: await fastify.prisma.practice.count({
+              where: { userId },
+            }),
+            avgSpeed,
+            accuracy,
+            date,
+            isComplete,
+            lessonId,
+            userId,
           },
-          update: !prePractice?.isComplete ? info : infoTrueIsComplete,
-          create: info,
+          // update: !prePractice[0].isComplete ? info : infoTrueIsComplete,
+          // create: info,
         });
 
-        console.log(updatePractice);
-        reply.send(updatePractice);
+        console.log(newPractice);
+        reply.send(newPractice);
       } catch (error) {
         console.error(error);
         reply.status(500);
@@ -222,7 +237,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   fastify.post<{
     Body: { userName: string; accessToken: string };
     Reply: {
-      practice: {
+      practice?: {
         isComplete: boolean;
       }[];
       id: number;
@@ -231,32 +246,41 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   }>("/lessons", async (request, reply) => {
     try {
       const { userName, accessToken } = request.body;
+      if (userName) {
+        await jwt.verify(
+          accessToken!,
+          process.env.ACCESS_TOKEN_SECRET!,
+          (error, user) => {
+            if (error) throw new Error("Token invalid!");
+          }
+        );
 
-      await jwt.verify(
-        accessToken!,
-        process.env.ACCESS_TOKEN_SECRET!,
-        (error, user) => {
-          if (error) throw new Error("Token invalid!");
-        }
-      );
-
-      const lessons = await fastify.prisma.lesson.findMany({
-        select: {
-          id: true,
-          name: true,
-          practice: {
-            select: {
-              isComplete: true,
-            },
-            where: {
-              userId: userName,
+        const lessons = await fastify.prisma.lesson.findMany({
+          select: {
+            id: true,
+            name: true,
+            practice: {
+              select: {
+                isComplete: true,
+              },
+              where: {
+                userId: userName,
+              },
             },
           },
-        },
-      });
-
-      console.log(lessons);
-      reply.send(lessons);
+        });
+        console.log(lessons);
+        reply.send(lessons);
+      } else {
+        const lessons = await fastify.prisma.lesson.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+        console.log(lessons);
+        reply.send(lessons);
+      }
     } catch (error) {
       console.error(error);
       reply.status(500);
@@ -310,9 +334,10 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
       userId: string;
       speed: number;
     };
-  }>("/speedTest", async (request, reply) => {
+  }>("/", async (request, reply) => {
     try {
-      const { userId, paragraphId, size, speed, accessToken } = request.body;
+      const { userId, paragraphId, speed, accuracy, date, accessToken } =
+        request.body;
 
       await jwt.verify(
         accessToken!,
@@ -321,39 +346,19 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
           if (error) throw new Error("Token invalid!");
         }
       );
-
-      const info = {
-        userParagraphId: userId + paragraphId.toString(),
-        speed: speed,
-        size: size,
-        userId: userId,
-        paragraphId: paragraphId,
-      };
-
-      const test = await fastify.prisma.test.findUnique({
-        where: {
-          userParagraphId: info.userParagraphId,
+      const newTest = await fastify.prisma.test.create({
+        data: {
+          id: await fastify.prisma.test.count({
+            where: { userId },
+          }),
+          speed: speed,
+          userId: userId,
+          paragraphId: paragraphId,
+          accuracy,
+          date,
         },
       });
-
-      if (test && test.speed > speed) info.speed = test.speed;
-
-      const updateTest = await fastify.prisma.test.upsert({
-        where: {
-          userParagraphId: info.userParagraphId,
-        },
-        update: {
-          speed: info.speed,
-        },
-        create: {
-          userParagraphId: info.userParagraphId,
-          speed: info.speed,
-          userId: info.userId,
-          paragraphId: info.paragraphId || -1,
-        },
-      });
-
-      console.log(updateTest);
+      console.log(newTest);
       reply.send({ userId, speed });
     } catch (error) {
       console.error(error);
@@ -454,6 +459,69 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
       reply.send(updateUser);
     } catch (error) {
       console.error(error);
+      reply.status(500);
+    }
+  });
+
+  //get test history
+  fastify.post<{
+    Body: { userName: string; accessToken: string };
+    Reply: { speed: number[]; accuracy: number[]; date: string[] };
+  }>("/getTest", async (request, reply) => {
+    try {
+      const { userName, accessToken } = request.body;
+      await jwt.verify(
+        accessToken!,
+        process.env.ACCESS_TOKEN_SECRET!,
+        (error, user) => {
+          if (error) throw new Error("Token invalid!");
+        }
+      );
+      const userTestData = await fastify.prisma.test.findMany({
+        where: { userId: userName },
+        select: { speed: true, accuracy: true, date: true },
+      });
+      const testDate: { speed: number[]; accuracy: number[]; date: string[] } =
+        {
+          speed: userTestData.map((test) => test.speed),
+          accuracy: userTestData.map((test) => test.accuracy),
+          date: userTestData.map((test) => test.date),
+        };
+      reply.send(testDate);
+    } catch (error) {
+      console.log(error);
+      reply.status(500);
+    }
+  });
+
+  //get lesson history
+  fastify.post<{
+    Body: { userName: string; lessonId: number; accessToken: string };
+    Reply: { speed: number[]; accuracy: number[]; date: string[] };
+  }>("/getPractice", async (request, reply) => {
+    try {
+      const { userName, lessonId, accessToken } = request.body;
+      await jwt.verify(
+        accessToken!,
+        process.env.ACCESS_TOKEN_SECRET!,
+        (error, user) => {
+          if (error) throw new Error("Token invalid!");
+        }
+      );
+      const userPracticeData = await fastify.prisma.practice.findMany({
+        where: { userId: userName, lessonId },
+        select: { avgSpeed: true, accuracy: true, date: true },
+      });
+      console.log(userPracticeData);
+      const testDate: { speed: number[]; accuracy: number[]; date: string[] } =
+        {
+          speed: userPracticeData.map((test) => test.avgSpeed),
+          accuracy: userPracticeData.map((test) => test.accuracy),
+          date: userPracticeData.map((test) => test.date),
+        };
+      reply.send(testDate);
+    } catch (error) {
+      console.log(error);
       reply.status(500);
     }
   });

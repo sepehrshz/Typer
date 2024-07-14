@@ -171,14 +171,37 @@ const resetPassword = async () => {
     </div>
 </template>
 <style>
-.fade-enter-active,
-.fade-leave-active {
-    transition: all 0.4s;
+.bounce-enter-from .bounce-leave-to {
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-    transition: all 0.4s;
+.bounce-enter-active {
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    animation: bounce-in 1s;
+}
+
+.bounce-leave-active {
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    animation: bounce-in 1s reverse;
+}
+
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+    }
+
+    60% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 </style>

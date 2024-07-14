@@ -16,17 +16,21 @@ model User {
   role          Role       @default(BASIC)
   practice      Practice[]
   test          Test[]
-  avatarIndex   Int
+  avatarIndex   Int?
   passwordToken String?
 }
 
 model Test {
-  userParagraphId String    @id
-  speed           Int
-  paragraph       Paragraph @relation(fields: [paragraphId], references: [id])
-  paragraphId     Int
-  user            User      @relation(fields: [userId], references: [userName])
-  userId          String
+  id          Int       @default(0)
+  speed       Int
+  accuracy    Int
+  date        String
+  paragraph   Paragraph @relation(fields: [paragraphId], references: [id])
+  paragraphId Int
+  user        User      @relation(fields: [userId], references: [userName])
+  userId      String
+
+  @@id([userId, id])
 }
 
 model Paragraph {
@@ -37,13 +41,17 @@ model Paragraph {
 }
 
 model Practice {
-  userLessonId String  @id
-  user         User    @relation(fields: [userId], references: [userName])
-  userId       String
-  lesson       Lesson  @relation(fields: [lessonId], references: [id])
-  lessonId     Int
-  avgSpeed     Int     @default(0)
-  isComplete   Boolean @default(false)
+  user       User    @relation(fields: [userId], references: [userName])
+  userId     String
+  lesson     Lesson  @relation(fields: [lessonId], references: [id])
+  lessonId   Int
+  avgSpeed   Int     @default(0)
+  accuracy   Int
+  date       String
+  isComplete Boolean @default(false)
+  id         Int     @default(0)
+
+  @@id([userId, lessonId, id])
 }
 
 model Lesson {

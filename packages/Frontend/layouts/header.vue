@@ -5,26 +5,26 @@ const logout = () => {
 }
 </script>
 <template>
-  <div class="relative z-20 flex items-center h-20 w-full bg-gradient-to-r from-gray-500 to-gray-400 text-white">
-    <div class="w-1/4 pl-10">Typer</div>
-    <div class="flex  items-center justify-evenly w-2/4">
+  <div
+    class="text-sm relative z-20 flex items-center h-20 w-full bg-gradient-to-r from-gray-500 to-gray-400 text-white md:text-base">
+    <div class="w-1/4 pl-6 md:pl-10">Typer</div>
+    <div class="flex items-center justify-between w-5/12 md:w-2/4 md:justify-evenly">
       <NuxtLink to="/">
         <div>Home</div>
       </NuxtLink>
       <NuxtLink to="/lessons">
         <div>Lessons</div>
       </NuxtLink>
-      <NuxtLink to="/speedTest">
-        <div>Speed test</div>
+      <NuxtLink v-if="user" to="/report">
+        <div>Report</div>
       </NuxtLink>
-      <div>About us</div>
     </div>
-    <div v-show="user" class="w-1/4 flex justify-end pr-10">
+    <div v-if="user" class="w-1/3 flex justify-end pr-5 md:pr-10 md:w-1/4">
       <button @click="logout()" class="flex justify-center items-center mr-5">
         <NuxtLink to="/">Logout</NuxtLink>
       </button>
       <NuxtLink to="/profile">
-        <img :src="`https://avatar.iran.liara.run/public/${user.avatarIndex}`" class="h-12 rounded-xl" />
+        <img :src="`https://avatar.iran.liara.run/public/${user.avatarIndex}`" class="h-10 rounded-lg md:h-12" />
       </NuxtLink>
     </div>
     <div v-show="!user" class="w-1/4 flex justify-center">

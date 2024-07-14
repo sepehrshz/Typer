@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: "header",
+})
 import lessons from "~/assets/lessons"
 import { ref } from "vue"
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
@@ -21,8 +24,10 @@ const letterIndex = ref<number>(0)
 const LessonBox = ref()
 const route = useRouter()
 const id = route.currentRoute.value.params?.id;
+const lessonId: number = ref(id);
 let isComplete = false;
 let ID = Number(id);
+let testDate: string;
 
 const user = useCookie<{
   userName: string,
@@ -35,6 +40,7 @@ const typeInfo = ref<TypeInfo>({
   startTime: 0,
   mistakes: 0,
   wpmTag: 0,
+  accuracy: 0,
 })
 
 const focusInput = () => {
@@ -104,7 +110,10 @@ const initTyping = () => {
     loadLesson.value[charIndex.value - 1].active = false;
     typeInfo.value.resultWindow = true;
     if (typeInfo.value.mistakes < 5 && typeInfo.value.startTime < 20) isComplete = true;
-    saveInfo();
+    if (user.value) {
+      testDate = new Date().toLocaleDateString('en-us', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      saveInfo();
+    }
     clearInterval(timer)
     inputField.value = ""
   }
@@ -122,6 +131,8 @@ const saveInfo = async () => {
         accessToken: user.value.accessToken,
         avgSpeed: typeInfo.value.wpmTag,
         isComplete: isComplete,
+        accuracy: typeInfo.value.accuracy,
+        date: testDate,
         lessonId: ID
       }
     })
@@ -130,12 +141,12 @@ const saveInfo = async () => {
 
 const initTimer = () => {
   typeInfo.value.startTime++;
-
   let wpm = Math.round(
     ((charIndex.value - typeInfo.value.mistakes) / 5 / (typeInfo.value.startTime)) * 60);
   wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
   typeInfo.value.wpmTag = wpm;
   typeInfo.value.startTime;
+  typeInfo.value.accuracy = Number(((charIndex.value - typeInfo.value.mistakes) / charIndex.value * 100).toFixed(0));
 }
 
 const resetGame = () => {
@@ -147,7 +158,6 @@ const resetGame = () => {
   typeInfo.value.mistakes = 0
   isTyping.value = false
   inputField.value = ""
-  typeInfo.value.cpmTag = 0
   letterIndex.value = 0
   loadLesson.value = lessons[id - 1].value.split("").map((v) => ({ letter: v, active: false, status: "neutral" }))
   focusInput();
@@ -174,12 +184,11 @@ const getRightHand = computed(() => {
   else
     return ("/hands/Key" + activeKey.value.toUpperCase() + "Right.svg")
 })
-
 </script>
 
 <template>
   <div class="flex justify-center">
-    <div class="w-[780px] pt-6 p-[35px] bg-white">
+    <div class="hidden w-[780px] pt-6 p-[35px] bg-white sm:block">
       <!-- Lesson box -->
       <input autofocus @input="initTyping" ref="inputFieldRef" v-model="inputField" type="text"
         class="opacity-0 z-0 absolute" />
@@ -269,7 +278,7 @@ const getRightHand = computed(() => {
         <Keyboard :active-key="activeKey" />
       </div>
       <!-- Result pop-up -->
-      <ResultPopup :type-info="typeInfo" @try-again="resetGame" />
+      <ResultPopup :type-info="typeInfo" @try-again="resetGame" :isLesson="true" :lessonId="lessonId" />
     </div>
   </div>
 </template>

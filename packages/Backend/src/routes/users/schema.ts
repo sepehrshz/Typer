@@ -14,6 +14,8 @@ export const Practice = Type.Object({
   userId: Type.String(),
   lessonId: Type.Integer(),
   avgSpeed: Type.Integer(),
+  accuracy: Type.Integer(),
+  date: Type.String(),
   isComplete: Type.Boolean(),
   accessToken: Type.Optional(Type.String()),
 });
@@ -28,6 +30,8 @@ export const Test = Type.Object({
   size: SizeEnum,
   paragraphId: Type.Number(),
   speed: Type.Number(),
+  accuracy: Type.Number(),
+  date: Type.String(),
   accessToken: Type.Optional(Type.String()),
 });
 

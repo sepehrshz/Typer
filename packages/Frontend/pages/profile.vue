@@ -109,14 +109,15 @@ const toggleAvatarWindow = (index = 15) => {
   <div v-show="user" class="relative w-full h-[100vh]">
     <NuxtLink to="/">
       <button
-        class="absolute top-6 flex justify-center items-center font-semibold left-6 z-10 w-40 h-12 rounded-xl bg-white">
+        class="absolute top-6 flex justify-center items-center font-semibold left-6 z-10 w-32 h-10 text-sm rounded-xl bg-white sm:text-base sm:w-40 sm:h-12">
         Back to home
       </button>
     </NuxtLink>
-    <div :class="isChange ? 'h-full' : 'h-80'"
+    <div :class="isChange ? 'h-80 sm:h-full' : 'h-80'"
       class="absolute w-full transition-all duration-1000 bg-gradient-to-r from-electric-violet-500 to-electric-violet-400">
     </div>
-    <div class="absolute top-40 left-1/2 -translate-x-1/2 z-10 w-7/12 h-2/3 shadow-xl rounded-2xl bg-white">
+    <div
+      class="absolute top-40 left-1/2 -translate-x-1/2 z-10 w-3/4 h-full sm:h-2/3 shadow-xl rounded-2xl pb-5 bg-white md:w-7/12">
       <div
         class="absolute flex justify-center items-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full"
         style="background-image: linear-gradient(to right, rgb(210, 87, 251) , rgb(210, 87, 251));">
@@ -126,10 +127,11 @@ const toggleAvatarWindow = (index = 15) => {
           <Icon class="absolute h-5 w-5 cursor-pointer" name="simple-line-icons:pencil" color="black" />
         </button>
       </div>
-      <UForm :schema="schema" :state="state" class="w-full h-full flex flex-col mt-5 items-center justify-evenly"
+      <UForm :schema="schema" :state="state" class="w-full h-full flex mt-10 flex-col items-center justify-evenly"
         @submit="onSubmit">
-        <div class="w-full h-3/6 flex flex-wrap px-16 mt-10 justify-around items-center">
-          <UFormGroup label="New Password" name="password" class="w-5/12 relative">
+        <div
+          class="w-full h-3/6 flex flex-col flex-wrap text-2xl px-16 justify-around items-center md:text-20 sm:mt-10 sm:flex-row">
+          <UFormGroup label="New Password" name="password" class="w-full relative sm:w-5/12">
             <UInput v-model="state.password" placeholder="Minimum 8 charachters" size="lg"
               :type="iconActive ? 'text' : 'password'" name="password"
               class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
@@ -137,7 +139,7 @@ const toggleAvatarWindow = (index = 15) => {
               :name="iconActive ? 'formkit:eye' : 'formkit:hidden'" color="black" />
           </UFormGroup>
 
-          <UFormGroup label="Confirm New Password" name="confirmPassword" class="w-5/12 relative">
+          <UFormGroup label="Confirm New Password" name="confirmPassword" class="w-full relative sm:w-5/12">
             <UInput v-model="state.confirmPassword" placeholder="Minimum 8 charachters" size="lg"
               :type="iconActive2 ? 'text' : 'password'" name="password"
               class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
@@ -145,29 +147,29 @@ const toggleAvatarWindow = (index = 15) => {
               :name="iconActive2 ? 'formkit:eye' : 'formkit:hidden'" color="black" />
           </UFormGroup>
 
-          <UFormGroup label="Full name" name="fullName" class="w-5/12">
+          <UFormGroup label="Full name" name="fullName" class="w-full sm:w-5/12">
             <UInput v-model="state.fullName" size="lg"
               class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
           </UFormGroup>
 
-          <UFormGroup label="Username" name="userName" class="w-5/12">
+          <UFormGroup label="Username" name="userName" class="w-full sm:w-5/12">
             <UInput v-model="state.userName" size="lg"
               class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
           </UFormGroup>
 
-          <UFormGroup label="Email" name="email" class="w-5/12">
+          <UFormGroup label="Email" name="email" class="w-full sm:w-5/12">
             <UInput v-model="state.email" size="lg"
               class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
           </UFormGroup>
         </div>
         <div class="flex w-10/12 justify-around">
           <UButton type="submit"
-            class="flex justify-center items-center bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-5/12 h-14 rounded-md text-lg font-semibold active:scale-90 transition-all duration-500">
+            class="flex justify-center items-center bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-5/12 h-14 rounded-md text-base font-semibold md:text-lg active:scale-90 transition-all duration-500">
             Save changes
           </UButton>
           <UButton type="button" @click="() => togglePopup()" @mouseenter="() => changeColor(true)"
             @mouseleave="() => changeColor(false)"
-            class="flex border-2 border-red-500 w-5/12 h-14 rounded-md text-red-500 justify-center items-center bg-white text-lg font-normal hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 hover:text-white hover:border-none">
+            class="flex border-2 border-red-500 w-5/12 h-14 rounded-md text-red-500 justify-center items-center bg-white text-base font-normal hover:bg-gradient-to-r md:text-lg hover:from-red-600 hover:to-red-500 hover:text-white hover:border-none">
             Delete account
           </UButton>
         </div>
