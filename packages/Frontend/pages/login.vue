@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import ResetPassword from "~/components/ResetPassword.vue";
 import { onClickOutside } from '@vueuse/core';
 
+const toast = useToast();
 const clickOutsideTarget = ref(null);
 onClickOutside(clickOutsideTarget, () => isForget.value = false)
 
@@ -60,16 +61,31 @@ const login = async () => {
       password: state.password
     }
   })
-  console.log(response)
-  user.value = {
-    name: response[0].name,
-    email: response[0].email,
-    userName: response[0].userName,
-    accessToken: response[1],
-    refreshToken: response[2],
-    avatarIndex: response[0].avatarIndex,
+  if (typeof (response) == "string") {
+    switch (response) {
+      case "Email or username not found":
+        toast.add({ title: response, color: 'red' });
+        break;
+      case "Invalid password":
+        toast.add({ title: response, color: 'red' });
+        break;
+    }
   }
-  router.push('/');
+  else if (response.length === 3) {
+    toast.add({ title: 'Login successfully', color: 'green' })
+    user.value = {
+      name: response[0].name,
+      email: response[0].email,
+      userName: response[0].userName,
+      accessToken: response[1],
+      refreshToken: response[2],
+      avatarIndex: response[0].avatarIndex,
+    }
+    router.push('/');
+  }
+  else {
+    toast.add({ title: 'Something went wrong', color: 'red' })
+  }
 }
 
 const iconActive = ref(false);
@@ -81,27 +97,27 @@ const changeIcon = () => {
 
 <template>
   <div
-    class="flex items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-200">
+    class="flex px-16 pb-10 pt-20 items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-300 md:to-electric-violet-200 sm:px-32 md:pb-0 md:px-0 md:pt-0">
     <NuxtLink to="/">
       <button
-        class="absolute top-6 flex justify-center items-center font-semibold left-6 z-20 w-40 h-12 rounded-xl bg-white">
+        class="absolute top-4 flex justify-center items-center font-semibold left-4 z-20 w-32 h-10 rounded-xl bg-white text-sm md:top-6 md:left-6 md:w-40 md:h-12">
         Back to home
       </button>
     </NuxtLink>
-    <div class="w-6/12 flex flex-col items-center justify-center">
+    <div class="w-6/12 hidden flex-col items-center justify-center md:flex">
       <img class="w-[580px]" src="../assets/signup-pic.png" />
     </div>
     <UForm :schema="schema" :state="state"
-      class="w-6/12 h-full py-10 flex flex-col justify-between items-center float-right bg-white rounded-l-[80px]"
+      class="w-6/12 h-full py-10 flex flex-col justify-between items-center flex-auto bg-white rounded-3xl md:rounded-l-[80px] md:rounded-none md:float-right"
       @submit="onSubmit">
-      <div class="mt-10 text-3xl">Login</div>
+      <div class="mt-10 text-4xl md:text-3xl">Login</div>
       <div class="w-full mt-12 h-72 flex flex-col justify-evenly items-center">
-        <UFormGroup label="Username or Email" name="email" class="w-1/2">
+        <UFormGroup label="Username or Email" name="email" class="w-3/4 md:w-1/2">
           <UInput v-model="state.email" size="lg"
             class="w-full block rounded-md border-gray-300 outline-none pt-1 focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
         </UFormGroup>
 
-        <UFormGroup label="Password" name="password" class="w-1/2 relative">
+        <UFormGroup label="Password" name="password" class="w-3/4 md:w-1/2 relative">
           <UInput v-model="state.password" size="lg" :type="iconActive ? 'text' : 'password'" name="password"
             class="w-full block rounded-md border-gray-300 outline-none pt-1 focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
           <Icon @click="() => changeIcon()" class="cursor-pointer absolute right-2 top-[15px]" size="20px"
@@ -109,7 +125,7 @@ const changeIcon = () => {
         </UFormGroup>
       </div>
       <UButton type="submit"
-        class="flex justify-center items-center mt-12 bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-1/2 h-14 rounded-md text-lg font-semibold">
+        class="flex justify-center items-center mt-12 bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-3/4 md:w-1/2 h-14 rounded-md text-lg font-semibold">
         Sign in
       </UButton>
       <div class="mt-5">
@@ -118,7 +134,7 @@ const changeIcon = () => {
           <NuxtLink to='/signup'>Sign up</NuxtLink>
         </span>
       </div>
-      <div>
+      <div class="mt-2 md:mt-0">
         Forget password?
         <span @click="() => isForget = true" class="cursor-pointer text-electric-violet-500">
           Reset password

@@ -31,8 +31,8 @@ const { resultWindow, startTime, mistakes, wpmTag } = toRefs(props.typeInfo)
             leave-from="opacity-100 translate-y-0 sm:scale-100"
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <DialogPanel
-              class="relative flex gap-10 transform overflow-hidden rounded-lg bg-white px-4 pt-0 text-left shadow-xl transition-all h-96 mt-12">
-              <div class="w-1/2 flex flex-col justify-center p-5">
+              class="relative w-5/6 lg:w-2/3 flex flex-col md:flex-row gap-10 transform overflow-hidden rounded-lg bg-white px-4 pt-0 text-left shadow-xl transition-all h-full md:h-96 mt-28 mb-12 md:mb-0 md:mt-12">
+              <div class="w-full md:w-1/2 flex flex-col justify-center p-5">
                 <div>
                   <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-electric-violet-100">
                     <CheckIcon class="h-6 w-6 text-electric-violet-600" aria-hidden="true" />
@@ -55,12 +55,13 @@ const { resultWindow, startTime, mistakes, wpmTag } = toRefs(props.typeInfo)
                     </div>
                   </div>
                 </div>
-                <div class="inline-block mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                <div
+                  class="flex flex-col md:flex-row mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   <div
                     class="outline-none inline-flex w-full justify-center rounded-md bg-electric-violet-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-electric-violet-600  sm:col-start-2 sm:text-sm">
                     <NuxtLink to="/lessons" class="w-full h-full flex justify-center items-center outline-none sty">
                       <button type="button" class="outline-none focus:outline-none">
-                        Go to lessons page
+                        Lessons page
                       </button>
                     </NuxtLink>
                   </div>
@@ -69,7 +70,7 @@ const { resultWindow, startTime, mistakes, wpmTag } = toRefs(props.typeInfo)
                     @click="$emit('tryAgain')">Try again</button>
                 </div>
               </div>
-              <div class="w-1/2 flex justify-center mb-4 items-center">
+              <div class="w-1/2 flex justify-center -mt-20 md:mt-0 mb-4 items-center">
                 <LessonReport v-if="isLesson" :lessonId="Number(props.lessonId)" />
                 <TestReport v-else />
               </div>

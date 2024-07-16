@@ -2,6 +2,8 @@
 import { z } from "zod"
 import type { FormSubmitEvent } from '#ui/types'
 
+const toast = useToast();
+
 const user = useCookie<{
   name: string,
   email: string,
@@ -47,9 +49,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 }
 
 const editProfile = async () => {
-  const response: {
-    userName: string
-  } = await $fetch('http://localhost:3000/edit', {
+  const response: string = await $fetch('http://localhost:3000/edit', {
     method: 'POST',
     body: {
       prevUserName: prevUserName,
@@ -60,17 +60,30 @@ const editProfile = async () => {
       accessToken: user.value.accessToken,
       avatarIndex: avatarIndex.value,
     }
-  })
-  prevUserName = response.userName;
-  user.value = {
-    name: state.fullName,
-    email: state.email,
-    userName: state.userName,
-    accessToken: user.value.accessToken,
-    avatarIndex: avatarIndex.value,
+  });
+  if (response === "short password")
+    toast.add({
+      title: 'Password must have at least 8 characters',
+      timeout: 5000,
+      color: 'red'
+    })
+  else {
+    toast.add({
+      title: 'Profile changed succesfully',
+      timeout: 5000,
+      color: 'green'
+    })
+    prevUserName = response;
+    user.value = {
+      name: state.fullName,
+      email: state.email,
+      userName: state.userName,
+      accessToken: user.value.accessToken,
+      avatarIndex: avatarIndex.value,
+    }
+    state.password = "";
+    state.confirmPassword = "";
   }
-  state.password = "";
-  state.confirmPassword = "";
 }
 
 const isShow = ref(false)

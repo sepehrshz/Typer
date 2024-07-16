@@ -184,7 +184,7 @@ const saveInfo = async () => {
   <div class="w-full h-[88vh] flex justify-center items-center p-[35px] bg-white">
     <!-- Typing box -->
     <input autofocus @input="initTyping" ref="inputFieldRef" v-model="inputField" type="text"
-      class="opacity-0 z-0 absolute" />
+      class="opacity-0 z-0 absolute hidden sm:block" />
     <div class="hidden rounded-xl w-[750px] border-2 border-gray-400 flex-col items-center sm:flex">
       <!-- Typing box header -->
       <div class="bg-gray-400 w-full h-16 rounded-t-lg flex justify-around items-center">

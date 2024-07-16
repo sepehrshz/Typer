@@ -11,7 +11,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   const refreshTokens = [];
 
   //signup API
-  fastify.post<{ Body: UserType; Reply: UserType }>(
+  fastify.post<{ Body: UserType; Reply: string }>(
     "/signup",
     async (request, reply) => {
       try {
@@ -24,11 +24,13 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
         });
 
         if (user?.email === email) {
-          throw new Error("Email has already taken");
+          // throw new Error("Email has already taken");
+          reply.send("Email has already taken");
         }
 
         if (user?.userName === userName) {
-          throw new Error("Username has already taken");
+          // throw new Error("Username has already taken");
+          reply.send("Username has already taken");
         }
 
         password = await bcrypt.hash(password, 10);
@@ -47,7 +49,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
             avatarIndex,
           },
         });
-        reply.send(newUser);
+        reply.send("Successfull");
       } catch (error) {
         console.error(error);
         reply.status(500);
@@ -56,39 +58,38 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   );
 
   //login API
-  fastify.post<{ Body: UserType; Reply: [UserType, string, string] }>(
-    "/login",
-    async (request, reply) => {
-      try {
-        const { email, password } = request.body;
-        const user = await fastify.prisma.user.findFirst({
-          where: {
-            OR: [{ email: email }, { userName: email }],
-          },
-        });
-        if (!user) {
-          throw new Error("Invalid email or username");
-        }
-
-        const result = await bcrypt.compare(password, user.password);
-
-        if (!result) {
-          throw new Error("Incorrect password");
-        }
-        const userWithoutPassword = (({ password, ...rest }) => rest)(user);
-        const accessToken = generateAccessToken(userWithoutPassword);
-        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET!);
-        refreshTokens.push(refreshToken);
-        reply.send([user, accessToken, refreshToken]);
-      } catch (error) {
-        console.error(error);
-        reply.status(500);
+  fastify.post<{ Body: UserType }>("/login", async (request, reply) => {
+    try {
+      const { email, password } = request.body;
+      const user = await fastify.prisma.user.findFirst({
+        where: {
+          OR: [{ email: email }, { userName: email }],
+        },
+      });
+      if (!user) {
+        // throw new Error("Invalid email or username");
+        reply.send("Email or username not found");
       }
+
+      const result = await bcrypt.compare(password, user.password);
+
+      if (!result) {
+        // throw new Error("Incorrect password");
+        reply.send("Invalid password");
+      }
+      const userWithoutPassword = (({ password, ...rest }) => rest)(user);
+      const accessToken = generateAccessToken(userWithoutPassword);
+      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET!);
+      refreshTokens.push(refreshToken);
+      reply.send([user, accessToken, refreshToken]);
+    } catch (error) {
+      console.error(error);
+      reply.status(500);
     }
-  );
+  });
 
   //edit profile API
-  fastify.post<{ Body: UserType; Reply: UserType }>(
+  fastify.post<{ Body: UserType; Reply: string }>(
     "/edit",
     async (request, reply) => {
       try {
@@ -115,7 +116,10 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
         };
 
         if (password != "") {
-          info.password = await bcrypt.hash(password, 10);
+          console.log(password.length);
+          if (password.length >= 8)
+            info.password = await bcrypt.hash(password, 10);
+          else reply.send("short password");
         }
 
         await jwt.verify(
@@ -133,7 +137,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
           data: info,
         });
 
-        reply.send(updateUser);
+        reply.send(updateUser.userName);
       } catch (error) {
         console.error(error);
         reply.status(500);
@@ -431,7 +435,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
   //reset password API
   fastify.post<{
     Body: { email: string; password: string; token: string };
-    Reply: { email: string; password: string };
+    Reply: string;
   }>("/resetPassword", async (request, reply) => {
     try {
       const { email, token } = request.body;
@@ -456,7 +460,7 @@ const userRoutes: FastifyPluginAsync = async (fastify, opts) => {
         },
       });
 
-      reply.send(updateUser);
+      reply.send("Password reset successfully");
     } catch (error) {
       console.error(error);
       reply.status(500);

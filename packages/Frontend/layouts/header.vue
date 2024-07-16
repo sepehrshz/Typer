@@ -8,15 +8,15 @@ const logout = () => {
   <div
     class="text-sm relative z-20 flex items-center h-20 w-full bg-gradient-to-r from-gray-500 to-gray-400 text-white md:text-base">
     <div class="w-1/4 pl-6 md:pl-10">Typer</div>
-    <div class="flex items-center justify-between w-5/12 md:w-2/4 md:justify-evenly">
+    <div class="flex items-start w-5/12 md:w-2/4 md:justify-evenly">
       <NuxtLink to="/">
         <div>Home</div>
       </NuxtLink>
       <NuxtLink to="/lessons">
-        <div>Lessons</div>
+        <div class="ml-10 md:ml-0">Lessons</div>
       </NuxtLink>
       <NuxtLink v-if="user" to="/report">
-        <div>Report</div>
+        <div class="ml-10 md:ml-0">Report</div>
       </NuxtLink>
     </div>
     <div v-if="user" class="w-1/3 flex justify-end pr-5 md:pr-10 md:w-1/4">
