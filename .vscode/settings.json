@@ -1,0 +1,4 @@
+{
+  "i18n-ally.localesPaths": ["packages/Frontend/locales"],
+  "i18n-ally.sourceLanguage": "en"
+}

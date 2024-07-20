@@ -1,11 +1,12 @@
 <script setup lang="ts">
+const { locale } = useI18n();
 </script>
 
 <template>
   <NuxtLayout>
-    <NuxtPage />
+    <NuxtPage :class="locale === 'en' ? 'font-nunito' : 'font-samim'" />
   </NuxtLayout>
-  <UNotifications />
+  <UNotifications :class="locale === 'en' ? 'font-nunito' : 'font-samim'" :dir="locale === 'en' ? 'ltr' : 'rtl'" />
 </template>
 
 <style>

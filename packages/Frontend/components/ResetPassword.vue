@@ -134,7 +134,7 @@ const resetPassword = async () => {
                         placeholder="you@example.com" />
                 </UFormGroup>
                 <UButton type="submit" :disabled="isSent ? true : false"
-                    class="inline-flex mt-4 h-9 w-full items-center justify-center rounded-md border border-transparent bg-electric-violet-500 px-4 py-2 font-medium text-white shadow-sm active:scale-90 transition-all sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    class="inline-flex mt-4 h-9 w-full items-center justify-center rounded-md border border-transparent bg-electric-violet-500 px-4 py-2 text-white shadow-sm active:scale-90 transition-all sm:mt-0 sm:ml-3 sm:w-auto">
                     Send
                     code</UButton>
             </UForm>
@@ -169,7 +169,7 @@ const resetPassword = async () => {
                         :name="iconActive2 ? 'formkit:eye' : 'formkit:hidden'" color="black" />
                 </UFormGroup>
                 <UButton type="submit"
-                    class="flex justify-center items-center bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-3/6 h-12 mt-5 rounded-md text-sm font-semibold">
+                    class="flex justify-center items-center bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-3/6 h-12 mt-5 sm:text-lg rounded-md">
                     Reset password
                 </UButton>
             </UForm>

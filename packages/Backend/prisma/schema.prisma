@@ -58,6 +58,7 @@ model Lesson {
   id       Int        @id
   name     String
   text     String
+  lang     String
   practice Practice[]
 }
 

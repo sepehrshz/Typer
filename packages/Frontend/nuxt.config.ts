@@ -13,11 +13,28 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@vueuse/nuxt",
     "@nuxt/test-utils/module",
+    "@nuxtjs/i18n",
   ],
+  i18n: {
+    defaultLocale: "en",
+    locales: [
+      {
+        code: "en",
+        name: "English",
+        iso: "en-US",
+        file: ".\\locales\\en.json",
+      },
+      {
+        code: "fa",
+        name: "Farsi",
+        iso: "fa-IR",
+        file: ".\\locales\\fa.json",
+        dir: "rtl",
+      },
+    ],
+  },
   colorMode: {
     classSuffix: "",
   },
-  image: {
-    // Options
-  },
+  css: ["/assets/fonts.css"],
 });

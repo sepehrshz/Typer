@@ -12,6 +12,8 @@ import type { TypeInfo } from "@/types/index"
 import neutralLeft from "@/public/hands/NeutralLeft.svg"
 import neutralRight from "@/public/hands/NeutralRight.svg"
 
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
 let timer: NodeJS.Timeout | undefined = undefined
 const charIndex = ref<number>(0)
 const isFirst = ref<boolean>(true)
@@ -197,7 +199,7 @@ const getRightHand = computed(() => {
         <div class="bg-gray-400 w-full h-14 rounded-t-lg flex justify-around items-center">
           <SwitchGroup as="div" class="flex items-center">
             <SwitchLabel as="span" class="mr-3">
-              <span class="text-sm font-medium text-gray-900">Time and speed</span>
+              <span class="text-sm font-medium text-gray-900">{{ t('time-and-speed') }}</span>
             </SwitchLabel>
             <Switch v-model="enabledDetail"
               :class="[enabledDetail ? 'bg-electric-violet-500' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none']">
@@ -249,22 +251,24 @@ const getRightHand = computed(() => {
         <!-- Typing details -->
         <div class="mt-6 w-11/12 flex py-6 justify-center flex-row border-t-2 border-t-gray-400">
           <ul v-if="enabledDetail" class="flex items-center w-full">
-            <li class="flex h-5 mr-5 list-none relative items-center">
-              <p class="text-lg">Start Time:</p>
-              <span class="block text-[20px] ml-2">{{ typeInfo.startTime }}s</span>
+            <li class="flex h-5 mr-5 list-none relative items-center"
+              :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'">
+              <p class="text-lg">{{ t('Start Time:') }}</p>
+              <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.startTime }}s</span>
             </li>
-            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
-              <p class="text-lg">Mistakes:</p>
-              <span class="block text-[20px] ml-2">{{ typeInfo.mistakes }}</span>
+            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500"
+              :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'">
+              <p class="text-lg">{{ t('Mistakes:') }}</p>
+              <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.mistakes }}</span>
             </li>
-            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
-              <p class="text-lg">WPM:</p>
-              <span class="block text-[20px] ml-2">{{ typeInfo.wpmTag }}</span>
+            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500"
+              :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'">
+              <p class="text-lg">{{ t('WPM:') }}</p>
+              <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.wpmTag }}</span>
             </li>
           </ul>
           <button @click="resetGame"
-            class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-electric-violet-500 transition-all hover:py-2 hover:bg-electric-violet-600 hover:scale-105 active:scale-90">Try
-            Again</button>
+            class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-electric-violet-500 transition-all hover:py-2 hover:bg-electric-violet-600 hover:scale-105 active:scale-90">{{ t('try-again') }}</button>
         </div>
       </div>
       <!-- Keyboard -->

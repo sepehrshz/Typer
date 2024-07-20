@@ -3,7 +3,8 @@ definePageMeta({
     layout: "header",
 })
 import * as echarts from 'echarts'
-const chartContainer = ref(null)
+const { t, locale } = useI18n();
+const chartContainer = ref(null);
 const chart = ref<EChartsType>();
 const user = useCookie<{ userName: string, accessToken: string }>('user');
 let test: { speed: number[], accuracy: number[], date: string[] };
@@ -17,7 +18,6 @@ const getTest = async () => {
             }
         });
     test = response;
-    console.log(test)
 }
 
 onMounted(async () => {
@@ -36,7 +36,7 @@ function initChart() {
             },
         ],
         legend: {
-            data: ['Speed', 'Accuracy'],
+            data: [t('Speed'), t('Accuracy')],
             orient: 'horizontal',
             right: 'center',
             top: 'bottom',
@@ -49,7 +49,7 @@ function initChart() {
             {
                 data: test.speed,
                 type: 'line',
-                name: 'Speed',
+                name: t('Speed'),
                 color: '#d721ff',
                 label: {
                     show: true,
@@ -62,7 +62,7 @@ function initChart() {
             {
                 data: test.accuracy,
                 type: 'line',
-                name: 'Accuracy',
+                name: t('Accuracy'),
                 color: 'gray',
                 label: {
                     show: true,
@@ -113,6 +113,6 @@ const downloadImage = (url: any) => {
     <div style="height: calc(100vh - 80px);" class="flex flex-col w-full justify-center items-center">
         <div ref="chartContainer" class="w-3/4 h-3/4"></div>
         <button @click="() => getChartUrl()" class="w-24 h-11 bg-electric-violet-500 text-white rounded-md text-sm 
-            flex justify-center items-center mt-8">Download</button>
+            flex justify-center items-center mt-8">{{ t('Download') }}</button>
     </div>
 </template>

@@ -25,6 +25,10 @@ module.exports = {
           950: "#4c005e",
         },
       },
+      fontFamily: {
+        samim: ['samim', 'sans-serif'],
+        nunito: ['Nunito', 'sans-serif'],
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")]
