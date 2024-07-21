@@ -26,7 +26,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        samim: ['samim', 'sans-serif'],
+        samim: ['Samim', 'sans-serif'],
         nunito: ['Nunito', 'sans-serif'],
       },
     },

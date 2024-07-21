@@ -10,6 +10,16 @@ const { locale } = useI18n();
 </template>
 
 <style>
+@font-face {
+  font-family: 'Samim';
+  src: url('./fonts/Samim/Samim-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('./fonts/Nunito/static/Nunito-Medium.ttf');
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;

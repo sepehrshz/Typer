@@ -263,7 +263,7 @@ const saveInfo = async () => {
           </template>
         </UProgress>
         <!-- Paragraph text -->
-        <div ref="typeBox" class="overflow-y-auto overflow-x-hidden mt-2 text-2xl max-h-96 px-5">
+        <div ref="typeBox" class="overflow-y-auto font-nunito overflow-x-hidden mt-2 text-2xl max-h-96 px-5">
           <span v-for="(word, index) in loadParagraph" :key="index" class="px-[0.5px]" :class="[
             word.active ? 'text-electric-violet-500 border-b-[3px] border-electric-violet-500 bg-electric-violet-100' : '',
             word.status === 'correct' ? 'text-green-600' : '',
