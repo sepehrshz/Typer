@@ -103,7 +103,7 @@ const changeIcon = () => {
   <div
     class="flex px-16 pb-10 pt-20 items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-300 md:to-electric-violet-200 sm:px-32 md:pb-0 md:px-0 md:pt-0">
     <NuxtLink :to="localePath('/')">
-      <button
+      <button :class="locale === 'en' ? '' : 'text-sm'"
         class="absolute top-4 flex justify-center items-center left-4 z-20 w-32 h-10 rounded-xl bg-white md:top-6 md:left-6 md:w-40 md:h-12">
         {{ t('Back to home') }}
       </button>

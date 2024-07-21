@@ -7,11 +7,11 @@ const { t, locale } = useI18n();
 const toast = useToast();
 const router = useRouter()
 const schema = z.object({
-  fullName: z.string().min(4),
-  userName: z.string().min(4),
+  fullName: z.string().min(4, t('String must contain at least 4 character')),
+  userName: z.string().min(4, t('String must contain at least 4 character')),
   email: z.string().email(t('invalid-email')),
   password: z.string().min(8, t('must-be-at-least-8-characters')),
-  confirmPassword: z.string().min(8, t('must-be-at-least-8-characters-0'))
+  confirmPassword: z.string().min(8, t('must-be-at-least-8-characters'))
     .refine((value) => value === state.password, {
       message: t('passwords-do-not-match'),
     })
@@ -70,14 +70,13 @@ const changeIcon2 = () => {
   else iconActive2.value = true
 }
 
-
 </script>
 
 <template>
   <div
     class="flex px-16 pb-10 pt-20 items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-300 md:to-electric-violet-200 md:pb-0 md:px-0 md:pt-0">
     <NuxtLink :to="localePath('/')">
-      <button
+      <button :class="locale === 'en' ? '' : 'text-sm'"
         class="absolute top-4 left-4 flex justify-center items-center z-10 w-32 h-10 md:top-6 md:left-6 md:w-40 md:h-12 rounded-xl bg-white">
         {{ t('Back to home') }}
       </button>
@@ -134,7 +133,7 @@ const changeIcon2 = () => {
         {{ t('sign-up') }} </UButton>
       <div class="mt-5">{{ t('already-have-an-account') }}
         <span class="cursor-pointer text-electric-violet-500">
-          <NuxtLink to="/login">{{ t('log-in') }}</NuxtLink>
+          <NuxtLink :to="localePath('/login')">{{ t('log-in') }}</NuxtLink>
         </span>
       </div>
     </UForm>

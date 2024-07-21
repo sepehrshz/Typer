@@ -56,5 +56,21 @@
   "save-changes": "ذخیره تغییرات",
   "delete-account": "حذف اکانت",
   "minimum-8-charachters-0": "حداقل ۸ کارکتر",
-  "Minimum 8 charachters": "حداقل ۸ کارکتر"
+  "Minimum 8 charachters": "حداقل ۸ کارکتر",
+  "must-be-at-least-8-characters": "رمز باید حداقل ۸ کارکتر داشته باشد",
+  "passwords-do-not-match": "رمزها یکسان نیستند",
+  "String must contain at least 4 character": "باید حداقل شامل ۴ کارکتر باشد",
+  "invalid-email": "ایمیل نامعتبر است",
+  "Invalid email": "ایمیل نامعتبر است",
+  "Must be at least 8 characters": "رمز باید شامل حداقل ۸ کارکتر باشد",
+  "Passwords do not match": "رمزها یکسان نیستند",
+  "Password reset successfully": "رمزعبور با موفقیت تغییر یافت",
+  "Forget Password?": "رمز عبور خود را فراموش کردید؟",
+  "Enter your email address below and we will send you 6-digit code": {
+    "": "برای دریافت کد ۶ رقمی ایمیل خود را در بخش زیر وارد کنید"
+  },
+  "Sendcode": "ارسال کد",
+  "You can try again after ": "ارسال مجدد کد بعد از ",
+  "Enter your new password": "رمز عبور جدید خود را وارد کنید",
+  "enter-your-email-address-below-and-we-will-send-you-6-digit-code": "برای دریافت کد ۶ رقمی ایمیل خود را در بخش زیر وارد کنید"
 }
