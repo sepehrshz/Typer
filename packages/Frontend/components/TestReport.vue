@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as echarts from 'echarts'
+const { t, locale } = useI18n();
 const chartContainer = ref(null)
 const chart = ref<EChartsType>();
 const user = useCookie<{ userName: string, accessToken: string }>('user');
@@ -38,7 +39,7 @@ function initChart(x: number) {
             },
         ],
         legend: {
-            data: ['Speed', 'Accuracy'],
+            data: [t('Speed'), t('Accuracy')],
             orient: 'horizontal',
             right: 'center',
             top: 'bottom',
@@ -51,7 +52,7 @@ function initChart(x: number) {
             {
                 data: test.speed,
                 type: 'line',
-                name: 'Speed',
+                name: t('Speed'),
                 color: '#d721ff',
                 label: {
                     show: true,
@@ -64,7 +65,7 @@ function initChart(x: number) {
             {
                 data: test.accuracy,
                 type: 'line',
-                name: 'Accuracy',
+                name: t('Accuracy'),
                 color: 'gray',
                 label: {
                     show: true,

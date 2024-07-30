@@ -91,5 +91,18 @@
   "Enter your email address below and we will send you 6-digit code": "Enter your email address below and we will send you 6-digit code.",
   "Sendcode": "Sendcode",
   "You can try again after ": "You can try again after ",
-  "Enter your new password": "Enter your new password"
+  "Enter your new password": "Enter your new password",
+  "Delete account": "Delete account",
+  "Are you sure you want to delete your account?": "Are you sure you want to delete your account?",
+  "All of your data will be permanently removed": {
+    "": "All of your data will be permanently removed."
+  },
+  "This action cannot be undone": {
+    "": "This action cannot be undone."
+  },
+  "Delete": "Delete",
+  "Cancel": "Cancel",
+  "Lessons page": "Lessons page",
+  "Test finish": "Test finish",
+  "Word per minute": "Word per minute"
 }

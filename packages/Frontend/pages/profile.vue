@@ -123,8 +123,8 @@ const toggleAvatarWindow = (index = 15) => {
   </div>
   <div v-show="user" class="relative w-full h-[100vh]">
     <NuxtLink :to="localePath('/')">
-      <button :class="locale === 'en' ? '' : 'text-sm'" class=" absolute top-6 flex justify-center items-center left-6 z-10 w-32 h-10 text-lg rounded-xl bg-white
-        sm:text-base sm:w-40 sm:h-12">
+      <button :class="locale === 'en' ? 'text-base' : 'text-sm font-semibold'" class=" absolute top-6 flex justify-center items-center left-6 z-10 w-32 h-10 text-lg rounded-xl bg-white
+         sm:w-40 sm:h-12">
         {{ t('Back to home') }} </button>
     </NuxtLink>
     <div :class="isChange ? 'h-80 sm:h-full' : 'h-80'"

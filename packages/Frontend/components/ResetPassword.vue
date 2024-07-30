@@ -4,7 +4,6 @@ import { z } from "zod";
 import VOtpInput from "vue3-otp-input";
 
 const { t, locale } = useI18n();
-const localePath = useLocalePath();
 const toast = useToast();
 const emit = defineEmits(['isValid']);
 const email = ref<string>();

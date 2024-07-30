@@ -8,6 +8,7 @@ import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
 import { get, onClickOutside, useScroll } from '@vueuse/core'
 import ResultPopup from "@/components/ResultPopup.vue"
 import type { TypeInfo } from "@/types/index"
+import GithubButton from 'vue-github-button';
 const { locale, setLocale, t } = useI18n();
 // Define reactive variables
 const timer = ref<NodeJS.Timeout | undefined>(undefined);
@@ -191,6 +192,9 @@ const saveInfo = async () => {
   <div>
     <LangSelector />
     <div class="w-full h-[88vh] flex justify-center items-center p-[35px] bg-white">
+      <!-- <github-button href="https://github.com/sepehrshz82/Typer"
+        data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large"
+        aria-label="Star sepehrshz82/Typer on GitHub">Star on github</github-button> -->
       <!-- Typing box -->
       <input autofocus @input="initTyping" ref="inputFieldRef" v-model="inputField" type="text"
         class="opacity-0 z-0 absolute hidden sm:block" />
@@ -228,15 +232,15 @@ const saveInfo = async () => {
           <span class="isolate inline-flex rounded-md">
             <button @click="toggleParagraphSize('SMALL')" type="button"
               :class="toggleId === 'SMALL' ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'"
-              class="relative inline-flex items-center rounded-l-md rtl:rounded-r-md border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">{{
+              class="relative inline-flex items-center rounded-l-md rtl:rounded-r-md border border-gray-400 px-4 py-2 text-sm focus:outline-none">{{
                 t('small') }}</button>
             <button @click="toggleParagraphSize('MEDIUM')" type="button"
               :class="toggleId === 'MEDIUM' ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'"
-              class="relative -ml-px inline-flex items-center border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">{{
+              class="relative -ml-px inline-flex items-center border border-gray-400 px-4 py-2 text-sm focus:outline-none">{{
                 t('medium') }}</button>
             <button @click="toggleParagraphSize('LARGE')" type="button"
               :class="toggleId === 'LARGE' ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'"
-              class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-400 px-4 py-2 text-sm font-medium focus:outline-none">{{
+              class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-400 px-4 py-2 text-sm focus:outline-none">{{
                 t('large') }}</button>
           </span>
         </div>
@@ -296,8 +300,8 @@ const saveInfo = async () => {
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.mistakes }}</span>
             </li>
           </ul>
-          <button @click="resetGame"
-            class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-electric-violet-500 transition-all hover:bg-electric-violet-600 active:scale-90">
+          <button @click="resetGame" :class="locale === 'en' ? 'font-semibold' : 'font-normal'"
+            class="outline-none border-none w-28 text-white py-2 text-sm cursor-pointer rounded-md bg-electric-violet-500 transition-all hover:bg-electric-violet-600 active:scale-90">
             {{ t('Try again') }}</button>
         </div>
       </div>

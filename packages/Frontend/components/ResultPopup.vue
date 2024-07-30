@@ -5,7 +5,8 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } fro
 import { CheckIcon } from '@heroicons/vue/24/outline'
 import type { TypeInfo } from "@/types/index"
 import TestReport from "./TestReport.vue";
-
+import type { _backgroundColor } from "#tailwind-config/theme";
+const { t, locale } = useI18n();
 const props = defineProps<{
   typeInfo: TypeInfo,
   isLesson: boolean,
@@ -38,20 +39,27 @@ const { resultWindow, startTime, mistakes, wpmTag } = toRefs(props.typeInfo)
                     <CheckIcon class="h-6 w-6 text-electric-violet-600" aria-hidden="true" />
                   </div>
                   <div class="mt-3 text-center sm:mt-5">
-                    <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">Test finish</DialogTitle>
-                    <div
+                    <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">{{ t('Test finish') }}
+                    </DialogTitle>
+                    <div :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'"
                       class="mt-8 px-10 bg-gray-200 rounded-md py-8 flex flex-col sm:px-4 sm:flex-row sm:justify-around">
-                      <span
-                        class="flex flex-row justify-between sm:flex sm:flex-row sm:items-center sm:justify-normal"><span
-                          class="flex items-center">
-                          <Icon size="18px" name="fluent-emoji:eleven-thirty" />&nbsp;Time:
+                      <span class="flex flex-row justify-between sm:flex sm:flex-row sm:items-center sm:justify-normal">
+                        <span class="flex items-center">
+                          <Icon size="18px" name="fluent-emoji:eleven-thirty" />&nbsp;{{ t('Time:') }}
                         </span>&nbsp;{{ startTime }}s</span>
                       <span class="flex flex-row justify-between"><span class="flex items-center">
-                          <Icon size="18px" name="fluent-emoji:cross-mark" />&nbsp;Mistakes:
+                          <Icon size="18px" name="fluent-emoji:cross-mark" />&nbsp;{{ t('Mistakes:') }}
                         </span>&nbsp;{{ mistakes }}</span>
                       <span class="flex flex-row justify-between"><span class="flex items-center">
-                          <Icon size="18px" name="fluent-emoji:antenna-bars" />&nbsp;WPM:
-                        </span>&nbsp;{{ wpmTag }}</span>
+                          <Icon size="18px" name="fluent-emoji:antenna-bars" />&nbsp;{{ t('WPM:') }}
+                        </span>&nbsp;{{ wpmTag }}
+                        <UTooltip
+                          :ui="{ arrow: { background: 'before:bg-electric-violet-500', ring: 'before:ring-1 before:ring-gray-200' }, ring: 'ring-1 ring-electric-violet-500' }"
+                          :text="t('Word per minute')" :popper="{ arrow: true, placement: 'top' }">
+                          <img class="h-4 w-4 mt-1" :class="locale === 'en' ? 'ml-1' : 'mr-1'"
+                            src="../assets/question.png" />
+                        </UTooltip>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -61,13 +69,13 @@ const { resultWindow, startTime, mistakes, wpmTag } = toRefs(props.typeInfo)
                     class="outline-none inline-flex w-full justify-center rounded-md bg-electric-violet-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-electric-violet-600  sm:col-start-2 sm:text-sm">
                     <NuxtLink to="/lessons" class="w-full h-full flex justify-center items-center outline-none sty">
                       <button type="button" class="outline-none focus:outline-none">
-                        Lessons page
+                        {{ t('Lessons page') }}
                       </button>
                     </NuxtLink>
                   </div>
                   <button type="button"
                     class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50  sm:col-start-1 sm:mt-0 sm:text-sm"
-                    @click="$emit('tryAgain')">Try again</button>
+                    @click="$emit('tryAgain')">{{ t('Try again') }}</button>
                 </div>
               </div>
               <div class="w-1/2 flex justify-center -mt-20 md:mt-0 mb-4 items-center">
