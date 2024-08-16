@@ -10,9 +10,16 @@ const user = useCookie('user');
 const primaryColor = ref(appConfig.ui.primary);
 
 onMounted(() => {
-    if (user.value.selectedColor) {
-        appConfig.ui.primary = user.value.selectedColor;
-        primaryColor.value = user.value.selectedColor;
+    if (user.value) {
+        if (user.value.selectedColor) {
+            appConfig.ui.primary = user.value.selectedColor;
+            primaryColor.value = user.value.selectedColor;
+        }
+        else
+            appConfig.ui.primary = 'electric-violet'
+    }
+    else {
+        appConfig.ui.primary = 'electric-violet'
     }
 });
 
