@@ -9,6 +9,7 @@ import { get, onClickOutside, useScroll } from '@vueuse/core'
 import ResultPopup from "@/components/ResultPopup.vue"
 import type { TypeInfo } from "@/types/index"
 import GithubButton from 'vue-github-button';
+import ColorPicker from "~/components/ColorPicker.vue";
 const { locale, setLocale, t } = useI18n();
 // Define reactive variables
 const timer = ref<NodeJS.Timeout | undefined>(undefined);
@@ -38,7 +39,7 @@ const typeInfo = ref<TypeInfo>({
 
 const user = useCookie<{
   userName: string,
-  accessToken: string
+  accessToken: string,
 }
 >('user');
 
@@ -49,7 +50,7 @@ onBeforeMount(() => {
 onMounted(() => {
   if (!user.value) {
     const text = t('Login to save your scores')
-    toast.add({ title: text, color: 'electric-violet' })
+    toast.add({ title: text, color: 'primary' })
   }
 })
 
@@ -191,10 +192,8 @@ const saveInfo = async () => {
 <template>
   <div>
     <LangSelector />
+    <ColorPicker />
     <div class="w-full h-[88vh] flex justify-center items-center p-[35px] bg-white">
-      <!-- <github-button href="https://github.com/sepehrshz82/Typer"
-        data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large"
-        aria-label="Star sepehrshz82/Typer on GitHub">Star on github</github-button> -->
       <!-- Typing box -->
       <input autofocus @input="initTyping" ref="inputFieldRef" v-model="inputField" type="text"
         class="opacity-0 z-0 absolute hidden sm:block" />
@@ -206,7 +205,7 @@ const saveInfo = async () => {
               <span class="text-sm font-medium text-grey-900">{{ t('time-and-speed') }}</span>
             </SwitchLabel>
             <Switch v-model="enabledDetail"
-              :class="[enabledDetail ? 'bg-electric-violet-500' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none']">
+              :class="[enabledDetail ? 'bg-primary' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none']">
               <span class="sr-only">use-setting</span>
               <span
                 :class="[enabledDetail ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']">
@@ -221,7 +220,7 @@ const saveInfo = async () => {
                 <span
                   :class="[enabledDetail ? 'opacity-100 ease-in duration-200' : 'opacity-0 ease-out duration-100', 'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity']"
                   aria-hidden="true">
-                  <svg class="h-3 w-3 text-electric-violet-600" fill="currentColor" viewBox="0 0 12 12">
+                  <svg class="h-3 w-3 text-primary-600" fill="currentColor" viewBox="0 0 12 12">
                     <path
                       d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
                   </svg>
@@ -231,15 +230,15 @@ const saveInfo = async () => {
           </SwitchGroup>
           <span class="isolate inline-flex rounded-md">
             <button @click="toggleParagraphSize('SMALL')" type="button"
-              :class="toggleId === 'SMALL' ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'"
+              :class="toggleId === 'SMALL' ? 'bg-primary text-white border-none' : 'bg-white hover:bg-gray-50'"
               class="relative inline-flex items-center rounded-l-md rtl:rounded-r-md border border-gray-400 px-4 py-2 text-sm focus:outline-none">{{
                 t('small') }}</button>
             <button @click="toggleParagraphSize('MEDIUM')" type="button"
-              :class="toggleId === 'MEDIUM' ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'"
+              :class="toggleId === 'MEDIUM' ? 'bg-primary text-white border-none' : 'bg-white hover:bg-gray-50'"
               class="relative -ml-px inline-flex items-center border border-gray-400 px-4 py-2 text-sm focus:outline-none">{{
                 t('medium') }}</button>
             <button @click="toggleParagraphSize('LARGE')" type="button"
-              :class="toggleId === 'LARGE' ? 'bg-electric-violet-500 text-white border-none' : 'bg-white hover:bg-gray-50'"
+              :class="toggleId === 'LARGE' ? 'bg-primary text-white border-none' : 'bg-white hover:bg-gray-50'"
               class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-400 px-4 py-2 text-sm focus:outline-none">{{
                 t('large') }}</button>
           </span>
@@ -247,11 +246,10 @@ const saveInfo = async () => {
         <!-- Progress bar -->
         <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-3"
           :value="Math.floor((charIndex / loadParagraph.length) * 100)"
-          :color="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'red' : 'electric-violet'" size="lg" indicator>
+          :color="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'red' : 'primary'" size="lg" indicator>
           <template #indicator="{ percent }">
             <div :style="{ width: `${percent}%` }">
-              <div
-                :class="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'text-red-600 text-xl' : 'text-purple-500'"
+              <div :class="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15) ? 'text-red-600 text-xl' : 'text-primary'"
                 class="ml-5 text-lg transition-all ease-linear flex items-center justify-end">
                 <div v-if="(typeInfo.wpmTag > 20 && typeInfo.startTime > 15)" class="fire">
                   <div class="flames">
@@ -269,7 +267,7 @@ const saveInfo = async () => {
         <!-- Paragraph text -->
         <div ref="typeBox" class="overflow-y-auto font-nunito overflow-x-hidden mt-2 text-2xl max-h-96 px-5">
           <span v-for="(word, index) in loadParagraph" :key="index" class="px-[0.5px]" :class="[
-            word.active ? 'text-electric-violet-500 border-b-[3px] border-electric-violet-500 bg-electric-violet-100' : '',
+            word.active ? 'text-primary border-b-[3px] border-primary bg-primary-100' : '',
             word.status === 'correct' ? 'text-green-600' : '',
             word.status === 'incorrect' ? 'text-red-600 bg-pink-200' : ''
           ]">
@@ -285,23 +283,23 @@ const saveInfo = async () => {
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.startTime }}s</span>
             </li>
             <li :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'"
-              class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
+              class="flex h-5 list-none relative items-center px-5 border-l-2 border-primary">
               <p class="text-lg">{{ t('WPM:') }}</p>
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.wpmTag }}</span>
             </li>
             <li :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'"
-              class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
+              class="flex h-5 list-none relative items-center px-5 border-l-2 border-primary">
               <p class="text-lg">{{ t('Accuracy:') }}</p>
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.accuracy }}</span>
             </li>
             <li :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'"
-              class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500">
+              class="flex h-5 list-none relative items-center px-5 border-l-2 border-primary">
               <p class="text-lg">{{ t('Mistakes:') }}</p>
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.mistakes }}</span>
             </li>
           </ul>
-          <button @click="resetGame" :class="locale === 'en' ? 'font-semibold' : 'font-normal'"
-            class="outline-none border-none w-28 text-white py-2 text-sm cursor-pointer rounded-md bg-electric-violet-500 transition-all hover:bg-electric-violet-600 active:scale-90">
+          <button @click="resetGame" :class="locale === 'en' ? 'font-semibold bg' : 'font-normal'"
+            class="outline-none border-none w-28 text-white py-2 text-sm cursor-pointer rounded-md transition-all bg-primary hover:bg-primary-600 active:scale-90">
             {{ t('Try again') }}</button>
         </div>
       </div>

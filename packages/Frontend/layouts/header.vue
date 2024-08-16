@@ -34,12 +34,12 @@ const logout = () => {
     <div v-show="!user" class="w-1/4 flex justify-center">
       <NuxtLink :to="localePath('/signup')">
         <button
-          class="flex justify-center items-center rounded-md h-10 w-20 border border-gray-300 hover:bg-electric-violet-500 hover:border-none">{{
+          class="flex justify-center items-center rounded-md h-10 w-20 border border-gray-300 hover:bg-primary hover:border-none">{{
             t('sign-up') }}</button>
       </NuxtLink>
       <NuxtLink :to="localePath('/login')">
         <button :class="locale === 'en' ? 'pb-0' : 'pb-2'"
-          class="flex justify-center items-center rounded-md ml-5 h-10 w-20 bg-electric-violet-500">{{
+          class="flex justify-center items-center rounded-md ml-5 h-10 w-20 bg-primary">{{
             t('login') }}</button>
       </NuxtLink>
     </div>

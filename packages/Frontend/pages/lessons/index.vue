@@ -40,12 +40,12 @@ getLessons();
         <div
             class="flex flex-wrap justify-center gap-6 p-5 overflow-y-auto rounded-xl w-3/4 h-full border-8 border-gray-300 bg-gray-300">
             <div v-for="(lesson, index) in lessons" :key="index"
-                :class="[(user ? lesson.practice[lesson.practice.length - 1]?.isComplete : false) ? 'hover: border-green-500' : 'hover: border-electric-violet-500']"
+                :class="[(user ? lesson.practice[lesson.practice.length - 1]?.isComplete : false) ? 'hover: border-green-500' : 'hover: border-primary']"
                 class="flex flex-col items-center cursor-pointer h-36 w-36 bg-white rounded-lg transition-all
                 ease-linear duration-200 hover:scale-110 hover:border-2">
                 <NuxtLink class="w-full flex flex-col items-center" :to="localePath(`/lessons/${index + 1}`)">
                     <span :class="[(user ? lesson.practice[lesson.practice.length - 1]?.isComplete : false) ? 'bg-green-500'
-                        : 'bg-electric-violet-500']" class="flex justify-center text-white h-6 w-8 rounded-b-md">
+                        : 'bg-primary']" class="flex justify-center text-white h-6 w-8 rounded-b-md">
                         {{ index + 1 }}
                     </span>
                     <span class="flex flex-col justify-center items-center h-28 w-full"> {{ lesson.name }}

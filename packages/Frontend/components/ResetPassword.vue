@@ -134,20 +134,20 @@ const resetPassword = async () => {
                 class="mt-6 flex flex-col items-start sm:flex-row">
                 <UFormGroup class="w-full sm:w-2/3" name="email">
                     <UInput :disabled="isSent ? true : false" autofocus v-model="email" size="md" name="email"
-                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-electric-violet-500 focus:ring-electring-violet-500 sm:text-sm"
+                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-electring-violet-500 sm:text-sm"
                         placeholder="you@example.com" />
                 </UFormGroup>
                 <UButton type="submit" :disabled="isSent ? true : false"
-                    class="inline-flex mt-4 h-9 w-full items-center justify-center rounded-md border border-transparent bg-electric-violet-500 px-4 py-2 text-white shadow-sm active:scale-90 transition-all sm:mt-0 sm:ml-3 sm:w-auto">
+                    class="inline-flex mt-4 h-9 w-full items-center justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-white shadow-sm active:scale-90 transition-all sm:mt-0 sm:ml-3 sm:w-auto">
                     {{ t('Sendcode') }}</UButton>
             </UForm>
             <p :dir="locale === 'en' ? 'ltr' : 'rtl'" class="mt-2 rtl:mt-4" v-if="isSent">
                 {{ t('You can try again after ') }}
-                <span class="text-electric-violet-500">{{
+                <span class="text-primary">{{
                     formattedTimeRemaining }}</span>
             </p>
             <v-otp-input ref="otpInput"
-                input-classes="w-[50px] h-[66px] sm:w-16 sm:h-20 m-1 sm:m-2 sm:mt-8 text-center text-2xl text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 focus:bg-white focus:ring-0 focus:border-2 focus:border-electric-violet-500"
+                input-classes="w-[50px] h-[66px] sm:w-16 sm:h-20 m-1 sm:m-2 sm:mt-8 text-center text-2xl text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 focus:bg-white focus:ring-0 focus:border-2 focus:border-primary"
                 separator="" inputType="letter-numeric" :num-inputs="6" v-model:value="bindModal"
                 :should-auto-focus="true" :should-focus-order="true" :is-disabled="!isSent ? true : false"
                 @on-complete="sendResetToken" />
@@ -163,7 +163,7 @@ const resetPassword = async () => {
                         }}</label>
                     <UInput autofocus v-model="state.password" size="lg" :type="iconActive ? 'text' : 'password'"
                         name="password"
-                        class="w-full block rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+                        class="w-full block rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
                     <Icon @click="changeIcon" class="cursor-pointer absolute right-2 top-2" size="20px"
                         :class="locale === 'en' ? 'right-2' : 'left-2'"
                         :name="iconActive ? 'formkit:eye' : 'formkit:hidden'" color="black" />
@@ -174,13 +174,13 @@ const resetPassword = async () => {
                         {{ t('Confirm Password') }}</label>
                     <UInput v-model="state.confirmPassword" size="lg" :type="iconActive2 ? 'text' : 'password'"
                         name="password2"
-                        class="w-full block rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+                        class="w-full block rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
                     <Icon @click="changeIcon2" class="cursor-pointer absolute right-2 top-2" size="20px"
                         :class="locale === 'en' ? 'right-2' : 'left-2'"
                         :name="iconActive2 ? 'formkit:eye' : 'formkit:hidden'" color="black" />
                 </UFormGroup>
                 <UButton type="submit"
-                    class="flex justify-center items-center bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-3/6 h-12 mt-5 sm:text-lg rounded-md">
+                    class="flex justify-center items-center bg-gradient-to-r from-primary to-primary-400 text-white w-3/6 h-12 mt-5 sm:text-lg rounded-md">
                     {{ t('Reset password') }}
                 </UButton>
             </UForm>

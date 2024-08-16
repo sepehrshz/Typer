@@ -101,7 +101,7 @@ const changeIcon = () => {
 
 <template>
   <div
-    class="flex px-16 pb-10 pt-20 items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-300 md:to-electric-violet-200 sm:px-32 md:pb-0 md:px-0 md:pt-0">
+    class="flex px-16 pb-10 pt-20 items-center justify-between w-full h-[100vh] bg-gradient-to-r from-primary from-20% to-primary-300 md:to-primary-200 sm:px-32 md:pb-0 md:px-0 md:pt-0">
     <NuxtLink :to="localePath('/')">
       <button :class="locale === 'en' ? '' : 'text-sm'"
         class="absolute top-4 flex justify-center items-center left-4 z-20 w-32 h-10 rounded-xl bg-white md:top-6 md:left-6 md:w-40 md:h-12">
@@ -120,31 +120,31 @@ const changeIcon = () => {
           <label :class="locale === 'en' ? 'float-left mb-2 ml-2' : 'float-right mr-2 mb-2'">{{ t('Username or Email')
             }}</label>
           <UInput v-model="state.email" size="lg"
-            class="w-full block rounded-md border-gray-300 outline-none pt-1 focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+            class="w-full block rounded-md border-gray-300 outline-none pt-1 focus:border-primary focus:ring-primary sm:text-sm" />
         </UFormGroup>
 
         <UFormGroup name="password" class="w-3/4 md:w-7/12 relative">
           <label :class="locale === 'en' ? 'float-left mb-2 ml-2' : 'float-right mr-2 mb-2'">{{ t('Password') }}</label>
           <UInput v-model="state.password" size="lg" :type="iconActive ? 'text' : 'password'" name="password"
-            class="w-full block rounded-md border-gray-300 outline-none pt-1 focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+            class="w-full block rounded-md border-gray-300 outline-none pt-1 focus:border-primary focus:ring-primary sm:text-sm" />
           <Icon @click="() => changeIcon()" :class="locale === 'en' ? 'right-2' : 'left-2'"
             class="cursor-pointer absolute top-1" size="20px" :name="iconActive ? 'formkit:eye' : 'formkit:hidden'"
             color="black" />
         </UFormGroup>
       </div>
       <UButton type="submit"
-        class="flex justify-center items-center mt-12 bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-3/4 md:w-1/2 h-14 rounded-md text-lg">
+        class="flex justify-center items-center mt-12 bg-gradient-to-r from-primary to-primary-400 text-white w-3/4 md:w-1/2 h-14 rounded-md text-lg">
         {{ t('Sign in') }}
       </UButton>
       <div class="mt-5">
         {{ t('Do not have any account?') }}
-        <span class="cursor-pointer text-electric-violet-500">
+        <span class="cursor-pointer text-primary">
           <NuxtLink :to="localePath('/signup')">{{ t('Sign up') }}</NuxtLink>
         </span>
       </div>
       <div class="mt-2 md:mt-0">
         {{ t('Forget password?') }}
-        <span @click="() => isForget = true" class="cursor-pointer text-electric-violet-500">
+        <span @click="() => isForget = true" class="cursor-pointer text-primary">
           {{ t('Reset password') }}
         </span>
       </div>

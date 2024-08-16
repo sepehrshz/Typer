@@ -128,13 +128,12 @@ const toggleAvatarWindow = (index = 15) => {
         {{ t('Back to home') }} </button>
     </NuxtLink>
     <div :class="isChange ? 'h-80 sm:h-full' : 'h-80'"
-      class="absolute w-full transition-all duration-1000 bg-gradient-to-r from-electric-violet-500 to-electric-violet-400">
+      class="absolute w-full transition-all duration-1000 bg-gradient-to-r from-primary from-45% to-primary-400">
     </div>
     <div
       class="absolute top-40 left-1/2 -translate-x-1/2 z-10 w-3/4 h-full sm:h-2/3 shadow-xl rounded-2xl pb-5 bg-white md:w-7/12">
       <div
-        class="absolute flex justify-center items-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full"
-        style="background-image: linear-gradient(to right, rgb(210, 87, 251) , rgb(210, 87, 251));">
+        class="absolute flex justify-center items-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-primary rounded-full">
         <img class="w-10/12 h-10/12 z-20 rounded-full" :src="`https://avatar.iran.liara.run/public/${avatarIndex}`" />
         <button @click="() => toggleAvatarWindow()"
           class="h-12 w-12 cursor-pointer bg-white rounded-full flex justify-center items-center absolute bottom-2/3 left-2/3 z-30">
@@ -150,7 +149,7 @@ const toggleAvatarWindow = (index = 15) => {
               }}</label>
             <UInput v-model="state.password" :placeholder="t('Minimum 8 charachters')" size="lg"
               :type="iconActive ? 'text' : 'password'" name="password"
-              class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+              class="w-full rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
             <Icon @click="() => changeIcon()" class="cursor-pointer absolute top-1" size="20px"
               :name="iconActive ? 'formkit:eye' : 'formkit:hidden'" color="black"
               :class="locale === 'en' ? 'right-2' : 'left-2'" />
@@ -161,7 +160,7 @@ const toggleAvatarWindow = (index = 15) => {
               {{ t('Confirm New Password') }}</label>
             <UInput v-model="state.confirmPassword" :placeholder="t('Minimum 8 charachters')" size="lg"
               :type="iconActive2 ? 'text' : 'password'" name="password"
-              class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+              class="w-full rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
             <Icon @click="() => changeIcon2()" class="cursor-pointer absolute top-1" size="20px"
               :name="iconActive2 ? 'formkit:eye' : 'formkit:hidden'" color="black"
               :class="locale === 'en' ? 'right-2' : 'left-2'" />
@@ -171,25 +170,25 @@ const toggleAvatarWindow = (index = 15) => {
             <label :class="locale === 'en' ? 'float-left mb-1 ml-2' : 'float-right mr-2 mb-1'">{{ t('Full name')
               }}</label>
             <UInput v-model="state.fullName" size="lg"
-              class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+              class="w-full rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
           </UFormGroup>
 
           <UFormGroup name="userName" class="w-full sm:w-5/12">
             <label :class="locale === 'en' ? 'float-left mb-1 ml-2' : 'float-right mr-2 mb-1'">{{ t('Username')
               }}</label>
             <UInput v-model="state.userName" size="lg"
-              class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+              class="w-full rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
           </UFormGroup>
 
           <UFormGroup name="email" class="w-full sm:w-5/12">
             <label :class="locale === 'en' ? 'float-left mb- ml-2' : 'float-right mr-2 mb-1'">{{ t('Email') }}</label>
             <UInput v-model="state.email" size="lg"
-              class="w-full rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+              class="w-full rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
           </UFormGroup>
         </div>
         <div class="flex w-10/12 justify-around">
           <UButton type="submit"
-            class="flex justify-center items-center bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-5/12 h-14 rounded-md text-base font-semibold md:text-lg active:scale-90 transition-all duration-500">
+            class="flex justify-center items-center bg-gradient-to-r from-primary to-primary-400 text-white w-5/12 h-14 rounded-md text-base font-semibold md:text-lg active:scale-90 transition-all duration-500">
             {{ t('save-changes') }} </UButton>
           <UButton type="button" @click="() => togglePopup()" @mouseenter="() => changeColor(true)"
             @mouseleave="() => changeColor(false)"

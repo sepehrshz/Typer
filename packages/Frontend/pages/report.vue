@@ -112,7 +112,7 @@ const downloadImage = (url: any) => {
 <template>
     <div style="height: calc(100vh - 80px);" class="flex flex-col w-full justify-center items-center">
         <div ref="chartContainer" class="w-3/4 h-3/4"></div>
-        <button @click="() => getChartUrl()" class="w-24 h-11 bg-electric-violet-500 text-white rounded-md text-sm 
+        <button @click="() => getChartUrl()" class="w-24 h-11 bg-primary text-white rounded-md text-sm 
             flex justify-center items-center mt-8">{{ t('Download') }}</button>
     </div>
 </template>

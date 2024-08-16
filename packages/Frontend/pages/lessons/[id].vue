@@ -202,7 +202,7 @@ const getRightHand = computed(() => {
               <span class="text-sm font-medium text-gray-900">{{ t('time-and-speed') }}</span>
             </SwitchLabel>
             <Switch v-model="enabledDetail"
-              :class="[enabledDetail ? 'bg-electric-violet-500' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none']">
+              :class="[enabledDetail ? 'bg-primary' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none']">
               <span class="sr-only">Use setting</span>
               <span
                 :class="[enabledDetail ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']">
@@ -217,7 +217,7 @@ const getRightHand = computed(() => {
                 <span
                   :class="[enabledDetail ? 'opacity-100 ease-in duration-200' : 'opacity-0 ease-out duration-100', 'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity']"
                   aria-hidden="true">
-                  <svg class="h-3 w-3 text-electric-violet-500" fill="currentColor" viewBox="0 0 12 12">
+                  <svg class="h-3 w-3 text-primary" fill="currentColor" viewBox="0 0 12 12">
                     <path
                       d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
                   </svg>
@@ -228,10 +228,10 @@ const getRightHand = computed(() => {
         </div>
         <!-- Progress bar -->
         <UProgress v-if="enabledDetail" class="w-11/12 h-16 mt-2"
-          :value="Math.floor((charIndex / loadLesson.length) * 100)" color="purple" size="lg" indicator>
+          :value="Math.floor((charIndex / loadLesson.length) * 100)" color="primary" size="lg" indicator>
           <template #indicator="{ percent }">
             <div class="text-right" :style="{ width: `${percent}%` }">
-              <span class="text-electric-violet-500 text-lg transition-all ease-linear">
+              <span class="text-primary text-lg transition-all ease-linear">
                 {{ Math.floor(percent) }}%
               </span>
             </div>
@@ -241,7 +241,7 @@ const getRightHand = computed(() => {
         <div ref="LessonBox" :class="!enabledDetail ? 'mt-6' : ''"
           class="w-full flex items-center justify-around text-9xl mt-2 h-48 px-5">
           <span v-for="(word, index) in currentLetters" :key="index" class="flex justify-center w-1/5 py-7" :class="[
-            word.active ? 'text-electric-violet-500 border border-electric-violet-500 bg-electric-violet-100 rounded-md' : 'bg-gray-100 rounded-md',
+            word.active ? 'text-primary border border-primary bg-primary-100 rounded-md' : 'bg-gray-100 rounded-md',
             word.status === 'correct' ? 'text-green-600' : '',
             word.status === 'incorrect' ? 'text-red-600 bg-pink-200' : ''
           ]">
@@ -256,19 +256,20 @@ const getRightHand = computed(() => {
               <p class="text-lg">{{ t('Start Time:') }}</p>
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.startTime }}s</span>
             </li>
-            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500"
+            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-primary"
               :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'">
               <p class="text-lg">{{ t('Mistakes:') }}</p>
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.mistakes }}</span>
             </li>
-            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-electric-violet-500"
+            <li class="flex h-5 list-none relative items-center px-5 border-l-2 border-primary"
               :style="locale == 'en' ? 'direction: ltr' : 'direction: rtl'">
               <p class="text-lg">{{ t('WPM:') }}</p>
               <span class="block text-[20px] ml-2">&nbsp;{{ typeInfo.wpmTag }}</span>
             </li>
           </ul>
           <button @click="resetGame"
-            class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-electric-violet-500 transition-all hover:py-2 hover:bg-electric-violet-600 hover:scale-105 active:scale-90">{{ t('try-again') }}</button>
+            class="outline-none border-none w-28 text-white py-2 text-sm font-semibold cursor-pointer rounded-md bg-primary transition-all hover:py-2 hover:bg-primary-600 hover:scale-105 active:scale-90">{{
+              t('try-again') }}</button>
         </div>
       </div>
       <!-- Keyboard -->

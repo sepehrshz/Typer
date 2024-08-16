@@ -17,7 +17,7 @@ const toggleActive = (index: number) => {
         </button>
         <div v-for="n in avatarsIndex" @click="() => toggleActive(n)"
             class="h-20 w-20 sm:h-36 sm:w-36 box-border mx-2 my-3 cursor-pointer bg-white rounded-full"
-            :class="[activeIndex != n ? 'transition-all duration-200 hover:scale-110 active:scale-125' : 'border-[6px] sm:border-8 border-electric-violet-500 transition-all duration-200 scale-[1.2]']">
+            :class="[activeIndex != n ? 'transition-all duration-200 hover:scale-110 active:scale-125' : 'border-[6px] sm:border-8 border-primary transition-all duration-200 scale-[1.2]']">
             <img class="box-border" :src="`https://avatar.iran.liara.run/public/${n}`" />
         </div>
     </div>

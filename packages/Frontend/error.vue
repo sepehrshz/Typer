@@ -8,7 +8,7 @@ const changeColor = (x: boolean) => {
 
 <template>
   <div class="bg-white w-full h-[100vh] flex flex-col justify-center items-center ">
-    <div class="w-[600px] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-400 p-10 rounded-2xl">
+    <div class="w-[600px] bg-gradient-to-r from-primary from-20% to-primary-400 p-10 rounded-2xl">
       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         x="0px" y="0px" viewBox="0 0 786.94 294.29" style="enable-background:new 0 0 786.94 294.29;"
         xml:space="preserve">
@@ -22,7 +22,7 @@ const changeColor = (x: boolean) => {
     </div>
     <div class="h-40 flex justify-center items-center text-4xl">OOPS! Page not found</div>
     <button @mouseenter="() => changeColor(true)" @mouseleave="() => changeColor(false)"
-      class="h-16 w-48 p-2 font-semibold border-2 border-electric-violet-500 rounded-xl hover:bg-gradient-to-r hover:from-electric-violet-500 hover:to-electric-violet-400 hover:border-none hover:text-white">
+      class="h-16 w-48 p-2 font-semibold border-2 border-primary rounded-xl hover:bg-gradient-to-r hover:from-primary hover:to-primary-400 hover:border-none hover:text-white">
       Back to home page
       <Icon size="20px" name="formkit:arrowright" :color="isHover ? 'white' : 'black'" />
     </button>

@@ -74,7 +74,7 @@ const changeIcon2 = () => {
 
 <template>
   <div
-    class="flex px-16 pb-10 pt-20 items-center justify-between w-full h-[100vh] bg-gradient-to-r from-electric-violet-500 from-20% to-electric-violet-300 md:to-electric-violet-200 md:pb-0 md:px-0 md:pt-0">
+    class="flex px-16 pb-10 pt-20 items-center justify-between w-full h-[100vh] bg-gradient-to-r from-primary from-20% to-primary-300 md:to-primary-200 md:pb-0 md:px-0 md:pt-0">
     <NuxtLink :to="localePath('/')">
       <button :class="locale === 'en' ? '' : 'text-sm'"
         class="absolute top-4 left-4 flex justify-center items-center z-10 w-32 h-10 md:top-6 md:left-6 md:w-40 md:h-12 rounded-xl bg-white">
@@ -93,26 +93,26 @@ const changeIcon2 = () => {
           <label :class="locale === 'en' ? 'float-left mb-2 ml-2' : 'float-right mr-2 mb-2'">{{ t('Full name')
             }}</label>
           <UInput v-model="state.fullName" size="lg"
-            class="w-full block rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+            class="w-full block rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
         </UFormGroup>
 
         <UFormGroup name="userName" class="w-3/4 md:w-1/2">
           <label :class="locale === 'en' ? 'float-left mb-2 ml-2' : 'float-right mr-2 mb-2'">{{ t('Username')
             }}</label>
           <UInput v-model="state.userName" size="lg"
-            class="w-full block rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+            class="w-full block rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
         </UFormGroup>
 
         <UFormGroup name="email" class="w-3/4 md:w-1/2">
           <label :class="locale === 'en' ? 'float-left mb-2 ml-2' : 'float-right mr-2 mb-2'">{{ t('Email') }}</label>
           <UInput v-model="state.email" size="lg"
-            class="w-full block rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+            class="w-full block rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
         </UFormGroup>
 
         <UFormGroup name="password" class="w-3/4 md:w-1/2 relative">
           <label :class="locale === 'en' ? 'float-left mb-2 ml-2' : 'float-right mr-2 mb-2'">{{ t('Password') }}</label>
           <UInput v-model="state.password" size="lg" :type="iconActive ? 'text' : 'password'" name="password"
-            class="w-full block rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+            class="w-full block rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
           <Icon @click="() => changeIcon()" class="cursor-pointer absolute top-1"
             :class="locale === 'en' ? 'right-2' : 'left-2'" size="20px"
             :name="iconActive ? 'formkit:eye' : 'formkit:hidden'" color="black" />
@@ -122,17 +122,17 @@ const changeIcon2 = () => {
           <label :class="locale === 'en' ? 'float-left mb-2 ml-2' : 'float-right mr-2 mb-2'">{{ t('Confirm Password')
             }}</label>
           <UInput v-model="state.confirmPassword" size="lg" :type="iconActive2 ? 'text' : 'password'" name="password2"
-            class="w-full block rounded-md border-gray-300 outline-none focus:border-electric-violet-500 focus:ring-electric-violet-500 sm:text-sm" />
+            class="w-full block rounded-md border-gray-300 outline-none focus:border-primary focus:ring-primary sm:text-sm" />
           <Icon @click="() => changeIcon2()" class="cursor-pointer absolute top-1"
             :class="locale === 'en' ? 'right-2' : 'left-2'" size="20px"
             :name="iconActive2 ? 'formkit:eye' : 'formkit:hidden'" color="black" />
         </UFormGroup>
       </div>
       <UButton type="submit"
-        class="flex justify-center items-center bg-gradient-to-r from-electric-violet-500 to-electric-violet-400 text-white w-3/4 md:w-1/2 h-14 rounded-md text-lg">
+        class="flex justify-center items-center bg-gradient-to-r from-primary to-primary-400 text-white w-3/4 md:w-1/2 h-14 rounded-md text-lg">
         {{ t('sign-up') }} </UButton>
       <div class="mt-5">{{ t('already-have-an-account') }}
-        <span class="cursor-pointer text-electric-violet-500">
+        <span class="cursor-pointer text-primary">
           <NuxtLink :to="localePath('/login')">{{ t('log-in') }}</NuxtLink>
         </span>
       </div>
