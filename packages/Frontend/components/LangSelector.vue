@@ -3,14 +3,18 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 
 const { locale, setLocale } = useI18n();
-const lang = ref(locale.value);
-switch (locale.value) {
-    case 'en':
-        lang.value = "EN"
-        break;
-    case 'fa':
-        lang.value = "FA"
-}
+
+const lang = ref(locale.value.toUpperCase());
+watch(locale, () => {
+    switch (locale.value) {
+        case 'en':
+            lang.value = "EN"
+            break;
+        case 'fa':
+            lang.value = "FA"
+    }
+})
+
 </script>
 <template>
     <Menu as="div" class="relative top-5 right-5 float-right">

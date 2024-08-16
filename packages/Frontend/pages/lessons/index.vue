@@ -36,7 +36,9 @@ getLessons();
 </script>
 
 <template>
-    <div v-show="lessons" class="flex justify-center py-8 h-[88vh]">
+    <LangSelector />
+    <ColorPicker />
+    <div v-show="lessons" class="flex ml-20 justify-center py-8 h-[88vh]">
         <div
             class="flex flex-wrap justify-center gap-6 p-5 overflow-y-auto rounded-xl w-3/4 h-full border-8 border-gray-300 bg-gray-300">
             <div v-for="(lesson, index) in lessons" :key="index"

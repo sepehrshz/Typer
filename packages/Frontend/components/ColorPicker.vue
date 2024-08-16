@@ -4,16 +4,15 @@ import colors from '#tailwind-config/theme/colors';
 import { useAppConfig } from 'nuxt/app';
 
 const appConfig = useAppConfig();
-const primaryColorCookie = useCookie('nuxt-ui-primary');
-
+const user = useCookie('user');
 
 // Define a ref for the primary color
 const primaryColor = ref(appConfig.ui.primary);
 
 onMounted(() => {
-    if (primaryColorCookie.value) {
-        appConfig.ui.primary = primaryColorCookie.value;
-        primaryColor.value = primaryColorCookie.value;
+    if (user.value.selectedColor) {
+        appConfig.ui.primary = user.value.selectedColor;
+        primaryColor.value = user.value.selectedColor;
     }
 });
 
@@ -25,7 +24,7 @@ const primaryColors = computed(() =>
             value: color,
             text: color,
             hex: colors[color][500], // Use the 500 shade directly
-        }))
+        })),
 );
 
 const primary = computed({
@@ -33,14 +32,14 @@ const primary = computed({
         return primaryColors.value.find(option => option.value === appConfig.ui.primary);
     },
     set(option) {
-        appConfig.ui.primary = option.value; // Update the primary color in app config
-        primaryColor.value = option.value; // Update the local ref for reactivity
+        appConfig.ui.primary = option.value;
+        primaryColor.value = option.value;
     }
 });
 
 const handleColorSelect = (colorValue: string) => {
     primary.value = primaryColors.value.find(option => option.value === colorValue) || primary.value;
-    primaryColorCookie.value = primary.value?.value;
+    user.value.selectedColor = primary.value?.value;
 };
 </script>
 
@@ -54,8 +53,8 @@ const handleColorSelect = (colorValue: string) => {
         </template>
 
         <template #panel>
-            <div class="p-2 w-32 mr-20">
-                <div class="grid grid-cols-5 gap-px">
+            <div class="p-2 w-32">
+                <div class="grid grid-cols-5">
                     <ColorPickerPill v-for="color in primaryColors" @click="() => handleColorSelect(color.value)"
                         :key="color.value" :color="color" :selected="primary" />
                 </div>

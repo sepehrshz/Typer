@@ -24,6 +24,7 @@ const user = useCookie<{
   accessToken: string,
   refreshToken: string,
   avatarIndex: number,
+  selectedColor: string
 }
 >('user', { maxAge: 60 * 60 * 24 * 7 })
 
