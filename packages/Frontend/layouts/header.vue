@@ -38,7 +38,7 @@ const logout = () => {
             t('sign-up') }}</button>
       </NuxtLink>
       <NuxtLink :to="localePath('/login')">
-        <button :class="locale === 'en' ? 'pb-0' : 'pb-2'"
+        <button :class="locale === 'en' ? 'pb-0' : 'pb-1'"
           class="flex justify-center items-center rounded-md ml-5 h-10 w-20 bg-primary">{{
             t('login') }}</button>
       </NuxtLink>
